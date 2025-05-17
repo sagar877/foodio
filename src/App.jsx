@@ -16,37 +16,39 @@ import RestaurantListByDish from './components/RestaurantListByDish';
 function App(){
 
 	const location = useLocation()
-	const hideFooterOn =['/cart'];
+	const hideFooterOn =['/cart', '/about'];
 
   	return (
 		<>
-			<Provider store={Store}>
-				<Navbar />
-				<Routes> 
-					<Route
-						path='/'
-						element={<Home/>}/>
-					<Route
-						path='/About'
-						element={<About/>}/>
-					<Route 
-						path="/restaurant/:id"
-						element={< FoodDetails/>}/>
-					<Route 
-						path="/dish/:collectionId"
-						element={< RestaurantListByDish/>}/>
-					<Route 
-						path='/ContactUs'
-						element={<ContactUs/>}/>
-					<Route 
-						path="/Cart"
-						element={<Cart/>}/>
-					<Route 
-						path='*'
-						element={<Error/>}/>
-				</Routes>
-			</Provider>
-			{ !hideFooterOn.includes(location.pathname) && <Footer />}
+			<div className="min-h-screen flex flex-col">
+				<Provider store={Store}>
+					<Navbar />
+					<Routes> 
+						<Route
+							path='/'
+							element={<Home/>}/>
+						<Route
+							path='/about'
+							element={<About/>}/>
+						<Route 
+							path="/restaurant/:id"
+							element={< FoodDetails/>}/>
+						<Route 
+							path="/dish/:collectionId"
+							element={< RestaurantListByDish/>}/>
+						<Route 
+							path='/ContactUs'
+							element={<ContactUs/>}/>
+						<Route 
+							path="/Cart"
+							element={<Cart/>}/>
+						<Route 
+							path='*'
+							element={<Error/>}/>
+					</Routes>
+				</Provider>
+				{ !hideFooterOn.includes(location.pathname) && <Footer />}
+			</div>
 		</>
   	)
 }

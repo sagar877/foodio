@@ -25,11 +25,11 @@ function FoodDetails() {
   	 	setExtra(response.data.cards[5].groupedCard.cardGroupMap.REGULAR.cards[1].card.card.itemCards)
    	}
     
-  	return !Object.entries(data).length ? <div className='flex justify-center items-center min-h-[33vh] text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>: (
+  	return !Object.entries(data).length ? <div className='flex justify-center items-center flex-1 text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>: (
 		<>
 			<div className='flex flex-col py-5'>
 				<div className='px-10'>
-					<h1 className='font-bold text-2xl mb-2'>{data.name}</h1>
+					<h1 className='font-bold text-2xl mb-4'>{data.name}</h1>
 					<div className='relative h-56 w-full border rounded-xl overflow-hidden'>
 						<div className='absolute left-10 top-6 h-44 w-96 p-5 border rounded-lg bg-white border-transparent z-10'>
 							<div className='flex gap-2 font-bold items-center'> 
@@ -46,9 +46,9 @@ function FoodDetails() {
 					</div>
 
 				</div>
-				<div className='px-10'>
+				<div className='px-10 my-5'>
 					<h1 className='font-bold my-4 text-lg'>Menu</h1>
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
 						{extra===undefined? 
 							Object.values(menu).map((item)=>{
 								return <MenuCard key={item?.dish?.id} item={item} />

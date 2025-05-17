@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { FontAwesomeIcon}  from '@fortawesome/react-fontawesome'
 import { faStar} from '@fortawesome/free-solid-svg-icons'
 
-function FoodCard({name,cloudinaryImageId,cuisines,sla,id,avgRating}) {
+function FoodCard({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) {
 
     const {lastMileTravelString}=sla
   	const Navigate=useNavigate()
@@ -12,19 +12,21 @@ function FoodCard({name,cloudinaryImageId,cuisines,sla,id,avgRating}) {
 	}
 
     return (
-		<div onClick={()=>details()} className="w-fit h-auto cursor-pointer flex-col p-4 rounded-lg mt-5 mb-5 bg-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-95">
-			<img src={
+		<div onClick={()=>details()} className="w-fit h-auto cursor-pointer flex-col my-2 bg-white transition-all duration-300 ease-in-out transform hover:scale-95">
+			<img className="rounded-xl" src={
 				"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+
 				cloudinaryImageId } 
 				alt="dish"/>
-			<p className='font-bold text-xl'>{name}</p>
-			<p className='break-all text-sm text-neutral-700'>{cuisines.join(",")}</p>
-			<p className='break-all text-sm text-neutral-700'>Distance:{lastMileTravelString}</p>
-			<p className="flex gap-1 items-center">
-				<div className='bg-green-700 w-5 h-5 rounded-full flex justify-center items-center'>
-					<FontAwesomeIcon className='fill-white w-3 stroke-white text-white' icon={faStar} />
-				</div>{avgRating}
-			</p>
+			<div className='px-4 py-2'>
+				<p className='font-bold text-base line-clamp-2'>{name}</p>
+				<p className="flex gap-1 items-center">
+					<div className='bg-green-700 w-4 h-4 rounded-full flex justify-center items-center'>
+						<FontAwesomeIcon className='fill-white w-2.5 stroke-white text-white' icon={faStar} />
+					</div>{avgRating}<span className='font-semibold'>. {sla.slaString}</span>
+				</p>
+				<p className='flex flex-wrap gap-2 text-sm text-neutral-700 my-1 line-clamp-1'>{cuisines.join(', ')}</p>
+				<p >{areaName}</p>
+			</div>
 		</div> 
     )
   }

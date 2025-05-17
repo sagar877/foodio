@@ -30,7 +30,7 @@ const DishCarousel = ({dishes}) => {
             <div class="embla__viewport" ref={emblaRef}>
                 <div className='embla__container flex'>
                     {dishes?.map((dish)=>
-                        <div key={dish?.id} onClick={() =>getRestaurantDetails(dish.action.link)}className='embla__slide min-w-0 cursor-pointer' style={{flex:"0 0 15%"}}>
+                        <div key={dish?.id} onClick={() =>getRestaurantDetails(dish.action.link)} className='embla__slide min-w-0 cursor-pointer' style={{flex:"0 0 15%"}}>
                             <img src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_600,c_fill/"+dish.imageId} alt="dish"/>
                         </div>
                     )}
