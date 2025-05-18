@@ -42,7 +42,7 @@ const CartCard = (item) => {
 					<button className="w-full text-white p-1.5 mt-2 text-sm rounded-lg bg-green-500" >Order now</button>
 				</div>
 			</div>
-			<button className="absolute right-3 top-2 text-red-700 cursor-default" onClick={()=> handleRemove(info)}>
+			<button className="absolute right-3 top-1 text-red-700 cursor-default" onClick={()=> handleRemove(info)}>
 				<FontAwesomeIcon className="cursor-pointer" icon={faXmark}/>
 			</button>
 		</div>

@@ -28,7 +28,7 @@ const MenuCard = ({item}) => {
 					<h2 className='font-bold text-base mt-1 line-clamp-1'>{name}</h2>
 					<p className='text-sm line-clamp-3 my-1.5 text-neutral-700'>{description}</p>
 					<p className='font-bold'>₹ {price/100}</p>
-					<button onClick={() => handleAdd(item)} className='border shadow-md font-semibold rounded-lg bg-white w-[70%] mx-auto -mb-6 text-green-600 p-1.5 mt-2 hover:bg-green-50'>{ isInCart ? 'Added' : 'Add'}</button>
+					<button onClick={() => handleAdd(item)} className='border shadow-md font-semibold rounded-lg bg-white w-[70%] mx-auto -mb-6 text-green-600 p-1.5 mt-2 hover:bg-green-50'>{ isInCart ? 'Added ' : 'Add'}</button>
 				</div>
 			</div>
 		</div>
