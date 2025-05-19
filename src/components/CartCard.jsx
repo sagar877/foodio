@@ -20,7 +20,7 @@ const CartCard = (item) => {
 
   return (
     <div>
-      	<div className="w-full h-auto relative cursor-default flex justify-between border border-white rounded-lg  bg-white my-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
+      	<div className="w-full h-auto relative cursor-default flex justify-between border p-4 rounded-lg  bg-white my-2">
 			<img className="rounded-bl-lg rounded-tl-lg w-[50%]" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_302,c_fill/"+info.imageId } alt="dish"/>
 			<div className='flex flex-col flex-1 h-auto p-5'>
 				<div>
@@ -39,7 +39,7 @@ const CartCard = (item) => {
 				</div>
 				{ info.price != undefined ? <div className="font-[gilroy-bold] flex justify-between border-t pt-2"> Totalprice: <span className="font-[gilroy-bold]">₹ {price/100}</span></div> : null}
 				<div className='flex items-center gap-2'>
-					<button className="w-full text-white p-1.5 mt-2 text-sm rounded-lg bg-green-500" >Order now</button>
+					<button className="w-full text-white p-1.5 mt-2 text-sm rounded-lg bg-green-700" >Order now</button>
 				</div>
 			</div>
 			<button className="absolute right-3 top-1 text-red-700 cursor-default" onClick={()=> handleRemove(info)}>

@@ -56,18 +56,7 @@ function Home() {
 			<div className='bg-lime-600 bg-opacity-5 h-screen px-20 max-lg:px-10 flex flex-col '>
 				<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-full justify-center'>
 					<div>
-						<div>
-							<motion.div
-								initial={{ x: -100, opacity: 0 }}     
-								animate={{ x: 0, opacity: 1 }}    
-								exit={{ x: 100, opacity: 0 }}         
-								transition={{ duration: 0.9 }}
-							>
-								<div className='relative z-20 -ms-48'>
-									<img src={leafImage2} alt='food' className='absolute max-lg:hidden max-w-[250px] -top-36' />
-								</div>
-							</motion.div>
-						</div>
+						<img src={leafImage2} alt='food' className='absolute max-lg:hidden max-w-[250px] top-16 left-0' />
 						<div>
 							<div className='text-5xl max-lg:text-4xl max-md:text-3xl max-lg:text-center font-bold my-auto text-green-700 leading-[60px]'>Order food online<br/>from your favourite<br/>local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
 							<div className='my-4 max-lg:my-3 text-lg max-md:text-base max-md:text-center font-[poppins] text-neutral-400 font-semibold'>Freshly made food delivered to your door.</div>
@@ -92,10 +81,10 @@ function Home() {
 					
 					 <AnimatePresence mode="wait">
 						<motion.div
-							initial={{ y: 15, opacity: 0 }}
+							initial={{ y: 70, opacity: 0 }}
 							animate={{ y: 0, opacity: 1 }}
-							exit={{ y: -15, opacity: 0 }}
-							transition={{ duration: 0.9 }}
+							exit={{ y: -70, opacity: 0 }}
+							transition={{ duration: 0.8 }}
 						>
 							<div className='relative flex flex-col justify-center'>
 								<img src={main} alt='food' className='relative z-10 max-w-[400px] max-h-[400px] my-auto'/>
