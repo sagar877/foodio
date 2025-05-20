@@ -37,7 +37,7 @@ function App(){
 							path="/dish/:collectionId"
 							element={< RestaurantListByDish/>}/>
 						<Route 
-							path='/ContactUs'
+							path='/contactUs'
 							element={<ContactUs/>}/>
 						<Route 
 							path="/Cart"

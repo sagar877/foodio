@@ -4,12 +4,14 @@ import { useEffect, useState, useRef} from 'react';
 import { useOnline } from '../utils/useOnline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DishCarousel from './DishCarousel';
+import { useSelector } from 'react-redux';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import main from '../Images/main-dish.png'
 import leafImage1 from '../Images/leaf1.png'
 import leafImage2 from '../Images/leaf2.png'
 import { AnimatePresence } from "motion/react"
 import * as motion from "motion/react-client"
+import Login from './Login';
 
 function filterData(text,allrestorant){
    	const filterData=allrestorant.filter((restaurant) =>
@@ -27,6 +29,7 @@ function Home() {
 	const[filterrestorant,setFilterRestorant]=useState([])
 	const isOnline=useOnline()
 	const sectionRef = useRef(null);
+	const isLoggedIn = useSelector( store=>store.app.isLoggedIn)
 
 	useEffect(()=>{
 		getRestaurantlist();
@@ -53,6 +56,7 @@ function Home() {
 
   	return allrestorant.length===0 ? <div className='flex flex-1 justify-center items-center h-full text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>:(
 		<>
+			{ isLoggedIn && <Login/>}
 			<div className='bg-lime-600 bg-opacity-5 h-screen px-20 max-lg:px-10 flex flex-col '>
 				<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-full justify-center'>
 					<div>
