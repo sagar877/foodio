@@ -5,7 +5,6 @@ import { addItem } from '../utils/CartSlice';
 const MenuCard = ({item}) => {
 
     const info = item.card?.info ? item?.card?.info : item.dish?.info
-
 	const itemId = item.card?.info?.id || item.dish?.info?.id;
     const {name, price, imageId, description} = info
 
