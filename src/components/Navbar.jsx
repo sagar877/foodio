@@ -29,7 +29,7 @@ function Navbar() {
 			<ul className='flex font-medium max-[500px]:hidden gap-5 py-10'>
 				<li className='px-2'><Link to="/">Home</Link></li> 
 				<li className='px-2'> <Link to="/about">About</Link></li>
-				<li className='px-2'> <Link to="/8ontactUs">Contact</Link></li>
+				<li className='px-2'> <Link to="contactUs">Contact</Link></li>
 			</ul>
 			<div className='max-[500px]:hidden flex items-center gap-3'>
 			{isLoggedIn ? <button className='bg-red-700 h-8 text-sm px-5 h-8 text-white rounded-xl' onClick={() =>setIslog(true) }>Log Out</button> :<button onClick={() =>handleLogin()} className='bg-green-700 text-sm px-5 h-8 text-white rounded-xl'>Log In</button>} 
