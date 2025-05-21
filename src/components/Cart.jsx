@@ -2,11 +2,12 @@ import { useSelector } from "react-redux";
 import CartDetails from "./CartDetails";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../utils/CartSlice";
-
+import Login from './Login'
 
 export const Cart=()=>{
 
     const userSelect=useSelector(Store=>Store.cart.items)
+	const isLoggedIn = useSelector(store => store.app.isLoggedIn)
    
     const dispatch=useDispatch()
 	
@@ -15,8 +16,9 @@ export const Cart=()=>{
     }
 
   
-  	return userSelect.length === 0? (<h2 className="text-center font-bold flex flex-1 justify-center items-center text-2xl mt-4">Cart Is Empty </h2>):(
+  	return userSelect.length === 0? (<>{ isLoggedIn && <Login/>} <h2 className="text-center font-bold flex flex-1 justify-center items-center text-2xl mt-4">Cart Is Empty </h2></>):(
 		<>
+		{ isLoggedIn && <Login/>}
 			<div className="flex justify-between px-10 mt-5">
 				<h1 className="font-bold text-3xl">CartItems</h1>
 				<button className="p-1.5 mt-1 bg-red-700 border w-[150px] rounded-lg text-white" onClick={()=>handleClear()}>Clear cart</button>

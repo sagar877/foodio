@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { faStar} from '@fortawesome/free-solid-svg-icons'
+import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MenuCard from './MenuCard';
+import Login from './Login';
 
 function FoodDetails() {
 
@@ -11,6 +13,8 @@ function FoodDetails() {
     const [data,setData]=useState({});
     const [menu,setMenu]=useState({});
     const[extra,setExtra]=useState({});
+
+	const isLoggedIn = useSelector(store => store.app.isLoggedIn)
     
 	useEffect(()=>{
 		getDetails()
@@ -27,6 +31,7 @@ function FoodDetails() {
     
   	return !Object.entries(data).length ? <div className='flex justify-center items-center flex-1 text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>: (
 		<>
+		{isLoggedIn && <Login/>}
 			<div className='flex flex-col py-5'>
 				<div className='px-10'>
 					<h1 className='font-bold text-2xl mb-4'>{data.name}</h1>
@@ -41,7 +46,7 @@ function FoodDetails() {
 							<div><span className='font-bold'>Location :</span> {data.locality}({data.areaName})</div>
 							<div className='line-clamp-1'>{data?.labels[1]?.message}</div>
 						</div>
-						<img className="object-cover w-full" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+data.cloudinaryImageId}
+						<img className="object-cover w-full" loading='lazy' src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+data.cloudinaryImageId}
 						alt="detail"/>
 					</div>
 

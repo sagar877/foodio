@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import Login from './Login'
 import { addItem } from '../utils/CartSlice';
 
 const MenuCard = ({item}) => {
@@ -20,9 +21,10 @@ const MenuCard = ({item}) => {
     }
 
   	return (
+		<>
 		<div>
 			<div className='border rounded-lg bg-white my-4'>   
-				<img className="w-full rounded-tr-lg rounded-tl-lg" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+ imageId} alt="menu-item"/>
+				<img className="w-full rounded-tr-lg rounded-tl-lg" loading="lazy" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+ imageId} alt="menu-item"/>
 				<div className='flex flex-col p-4 py-2'>
 					<h2 className='font-bold text-base mt-1 line-clamp-1'>{name}</h2>
 					<p className='text-sm line-clamp-3 my-1.5 text-neutral-700'>{description}</p>
@@ -31,6 +33,7 @@ const MenuCard = ({item}) => {
 				</div>
 			</div>
 		</div>
+	</>
   	)
 }
 

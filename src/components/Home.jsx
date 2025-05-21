@@ -60,8 +60,8 @@ function Home() {
 				</video>	
 				<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-full justify-center'>
 					<div>
-						<div class="w-[50%] mx-auto">
-							<div className='text-6xl max-lg:text-4xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
+						<div class="w-[50%] max-lg:w-[80%] mx-auto">
+							<div className='text-6xl max-xl:text-4xl max-2xl:text-5xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
 							<div className='my-4 max-lg:my-3 text-center text-xl max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
 							<div className='flex border rounded-full h-11 bg-white'>
 								<input 
