@@ -6,12 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DishCarousel from './DishCarousel';
 import { useSelector } from 'react-redux';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import main from '../Images/main-dish.png'
-import leafImage1 from '../Images/leaf1.png'
-import leafImage2 from '../Images/leaf2.png'
 import background from '../Images/background.mp4'
-import { AnimatePresence } from "motion/react"
-import * as motion from "motion/react-client"
 import Login from './Login';
 
 function filterData(text,allrestorant){
@@ -58,20 +53,20 @@ function Home() {
   	return allrestorant.length===0 ? <div className='flex flex-1 justify-center items-center h-full text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>:(
 		<>
 			{ isLoggedIn && <Login/>}
-			<div className='h-screen px-20 max-lg:px-10 flex flex-col ' >
+			<div className='bg-gradient-to-t from-black/70 to-white/5 h-screen px-20 max-lg:px-10 flex flex-col' >
 				<video class="absolute -z-10 inset-0 object-cover" autoPlay muted loop  playsInline id="myVideo">
 					<source src={background} type="video/mp4" />
 						Your browser does not support the video tag.
 				</video>	
 				<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-full justify-center'>
 					<div>
-						<div>
-							<div className='text-5xl max-lg:text-4xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[60px]'>Order food online<br/>from your favourite<br/>local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
-							<div className='my-4 max-lg:my-3 text-center text-lg max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
+						<div class="w-[50%] mx-auto">
+							<div className='text-6xl max-lg:text-4xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
+							<div className='my-4 max-lg:my-3 text-center text-xl max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
 							<div className='flex border rounded-full h-11 bg-white'>
 								<input 
 									type='text' 
-									className='border-none mx-2 font-[poppins] w-full rounded-full p-1 focus:bg-white focus:outline-none placeholder:text-sm' 
+									className='border-none mx-2 font-[poppins] w-full rounded-full p-2 focus:bg-white focus:outline-none placeholder:text-sm' 
 									value={text} 
 									placeholder='Search for restaurant'
 									onChange={(e)=>setText(e.target.value)} 

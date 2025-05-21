@@ -27,18 +27,12 @@ function App(){
 						<Route
 							path='/'
 							element={<Home/>}/>
-						<Route
-							path='/about'
-							element={<About/>}/>
 						<Route 
 							path="/restaurant/:id"
 							element={< FoodDetails/>}/>
 						<Route 
 							path="/dish/:collectionId"
 							element={< RestaurantListByDish/>}/>
-						<Route 
-							path='/contactUs'
-							element={<ContactUs/>}/>
 						<Route 
 							path="/Cart"
 							element={<Cart/>}/>

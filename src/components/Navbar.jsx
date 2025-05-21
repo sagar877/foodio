@@ -26,11 +26,6 @@ function Navbar() {
 		<div className={`bg-lime-600 ${ isHome? 'bg-opacity-0' : 'bg-opacity-5'} flex items-center h-16  justify-between px-10`}>  
 			<a href="/" className={`${ isHome? 'text-white' : 'text-black'} font-[merienda] text-2xl font-semibold`}>Foodio</a>
 			<FontAwesomeIcon className='max-[499px]:block min-[500px]:hidden w-7 h-5 mr-3' icon={faBars}/>
-			<ul className={`flex font-medium ${ isHome? 'text-white' : 'text-black'} max-[500px]:hidden gap-5 py-10`}>
-				<li className='px-2'><Link to="/">Home</Link></li> 
-				<li className='px-2'> <Link to="/about">About</Link></li>
-				<li className='px-2'> <Link to="/8ontactUs">Contact</Link></li>
-			</ul>
 			<div className='max-[500px]:hidden flex items-center gap-3'>
 			{!isLoggedIn && <button onClick={() =>handleLogin()} className={`${ isHome? 'bg-transparent px-3' : 'bg-green-600 text-sm px-4'} h-8 text-white font-medium rounded-xl`}>Log In</button>} 
 				<Link to="/cart">
