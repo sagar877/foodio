@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import background from '../Images/background.mp4'
 import Login from './Login';
+import Register from './Register';
 
 function filterData(text,allrestorant){
    	const filterData=allrestorant.filter((restaurant) =>
@@ -26,6 +27,7 @@ function Home() {
 	const isOnline=useOnline()
 	const sectionRef = useRef(null);
 	const isLoggedIn = useSelector( store=>store.app.isLoggedIn)
+	const isRegistered = useSelector( store=>store.app.isRegistered)
 
 	useEffect(()=>{
 		getRestaurantlist();
@@ -53,6 +55,7 @@ function Home() {
   	return allrestorant.length===0 ? <div className='flex flex-1 justify-center items-center h-full text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>:(
 		<>
 			{ isLoggedIn && <Login/>}
+			{ isRegistered && <Register/>}
 			<div className='bg-gradient-to-t from-black/70 to-white/5 h-screen px-20 max-lg:px-10 flex flex-col' >
 				<video class="absolute -z-10 inset-0 object-cover" autoPlay muted loop  playsInline id="myVideo">
 					<source src={background} type="video/mp4" />
@@ -60,10 +63,10 @@ function Home() {
 				</video>	
 				<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-full justify-center'>
 					<div>
-						<div class="w-[50%] max-lg:w-[80%] mx-auto">
+						<div class="w-[50%] max-lg:w-[80%] max-md:w-full mx-auto">
 							<div className='text-6xl max-xl:text-4xl max-2xl:text-5xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
 							<div className='my-4 max-lg:my-3 text-center text-xl max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
-							<div className='flex border rounded-full h-11 bg-white'>
+							<div className='flex border rounded-full h-11 w-[85%] max-md:w-full mx-auto bg-white'>
 								<input 
 									type='text' 
 									className='border-none mx-2 font-[poppins] w-full rounded-full p-2 focus:bg-white focus:outline-none placeholder:text-sm' 

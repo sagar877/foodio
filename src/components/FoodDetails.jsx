@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MenuCard from './MenuCard';
 import Login from './Login';
+import Register from './Register'
 
 function FoodDetails() {
 
@@ -15,6 +16,7 @@ function FoodDetails() {
     const[extra,setExtra]=useState({});
 
 	const isLoggedIn = useSelector(store => store.app.isLoggedIn)
+	const isRegistered = useSelector( store=>store.app.isRegistered)
     
 	useEffect(()=>{
 		getDetails()
@@ -31,6 +33,7 @@ function FoodDetails() {
     
   	return !Object.entries(data).length ? <div className='flex justify-center items-center flex-1 text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>: (
 		<>
+		{ isRegistered && <Register/>}
 		{isLoggedIn && <Login/>}
 			<div className='flex flex-col py-5'>
 				<div className='px-10'>
