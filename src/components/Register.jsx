@@ -2,9 +2,37 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
+import { useState } from 'react'
 import { toggleRegister } from '../utils/AppSlice'
 
 const Register = () => {
+
+	const [registerForm, setRegisterForm] = useState({
+		name: '',
+		email: '',
+		password: ''
+	});
+
+	const [errors, setErrors] = useState({});
+
+	const handleChange = () =>{
+		setRegisterForm({...registerForm , [e.target.name] : e.target.value})
+	}
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		if(!registerForm.name){
+			setErrors( prevErrors =>({...prevErrors, name: 'Name is required' }));
+		}
+		if(!registerForm.email){
+			setErrors( prevErrors => ({ ...prevErrors, email: 'Email is required' }));
+		}
+		if(!registerForm.password){
+			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
+		}
+	}
+
 
     const dispatch = useDispatch()
 
@@ -29,13 +57,19 @@ const Register = () => {
 							</h3>
 							<FontAwesomeIcon className="cursor-pointer h-5 hover:text-gray-600" icon={faTimes} onClick={() => handleRegister()}/>
 						</div>
-						<form className="flex flex-col mt-5" action='' method=''>
+						<form className="flex flex-col mt-5" onSubmit={handleSubmit}>
 							<label>Name</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="text" placeholder='Enter your email' required/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="name" onChange={(e) => handleChange(e.target.value)} value={registerForm.name} type="text" placeholder='Enter your name'/>
+							{errors.name && <p className="text-red-500 text-xs mt-1 ps-1">{errors.name}</p>}
+
                             <label className='mt-5'>Email</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="email" placeholder='*********' required/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="email" onChange={(e) => handleChange(e.target.value)} value={registerForm.email} type="email" placeholder='Enter your email'/>
+							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email}</p>}
+
 							<label className='mt-5'>Password</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="password" placeholder='*********' required/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="password" onChange={(e) => handleChange(e.target.value)} value={registerForm.password} type="password" placeholder='*********'/>
+							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password}</p>}
+
 							<button className='w-full bg-green-600 rounded-md text-white p-1.5 mt-8'>Sign up</button>
 						</form>
 					</div>
