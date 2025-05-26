@@ -19,7 +19,7 @@ const Register = () => {
 		setRegisterForm({...registerForm , [e.target.name] : e.target.value})
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit =  (e) => {
 		e.preventDefault();
 
 		if(!registerForm.name){
@@ -59,15 +59,15 @@ const Register = () => {
 						</div>
 						<form className="flex flex-col mt-5" onSubmit={handleSubmit}>
 							<label>Name</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="name" onChange={(e) => handleChange(e.target.value)} value={registerForm.name} type="text" placeholder='Enter your name'/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="name" onChange={handleChange} value={registerForm.name} type="text" placeholder='Enter your name'/>
 							{errors.name && <p className="text-red-500 text-xs mt-1 ps-1">{errors.name}</p>}
 
                             <label className='mt-5'>Email</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="email" onChange={(e) => handleChange(e.target.value)} value={registerForm.email} type="email" placeholder='Enter your email'/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="email" onChange={handleChange} value={registerForm.email} type="email" placeholder='Enter your email'/>
 							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email}</p>}
 
 							<label className='mt-5'>Password</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="password" onChange={(e) => handleChange(e.target.value)} value={registerForm.password} type="password" placeholder='*********'/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="password" onChange={handleChange} value={registerForm.password} type="password" placeholder='*********'/>
 							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password}</p>}
 
 							<button className='w-full bg-green-600 rounded-md text-white p-1.5 mt-8'>Sign up</button>

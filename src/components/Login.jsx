@@ -13,7 +13,7 @@ const Login = () => {
 	})
 	const [errors, setErrors] = useState({});
 
-	const handleChange = () =>{
+	const handleChange = (e) =>{
 		setLoginForm({ ...loginForm ,[ e.target.name ] : e.target.value })
 	}
 
@@ -58,14 +58,14 @@ const Login = () => {
 						</div>
 						<form className="flex flex-col mt-5" onSubmit={handleSubmit}>
 							<label>Email</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' onChange={(e) => handleChange(e.target.value)} value={loginForm.email} name="email" type="email" placeholder='Enter your email'/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' onChange={handleChange} value={loginForm.email} name="email" type="email" placeholder='Enter your email'/>
 							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email}</p>}
 							<label className='mt-5'>Password</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' onChange={(e) => handleChange(e.target.value)} value={loginForm.password} name="password" type="password" placeholder='*********'/>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' onChange={handleChange} value={loginForm.password} name="password" type="password" placeholder='*********'/>
 							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password}</p>}
 							<button className='w-full bg-green-600 rounded-md text-white p-1.5 mt-8'>login</button>
 						</form>
-						<div className='mt-5'>New to Foodio ? <button onClick={() =>{ handleLogin() ; handleRegister() ; handleSubmit() }} className="text-green-600 underline" href="">Create Account</button></div>
+						<div className='mt-5'>New to Foodio ? <button onClick={() =>{ handleLogin() ; handleRegister()}} className="text-green-600 underline" href="">Create Account</button></div>
 					</div>
 				</div>
     		</div>
