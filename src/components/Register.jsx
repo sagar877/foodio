@@ -15,11 +15,11 @@ const Register = () => {
 
 	const [errors, setErrors] = useState({});
 
-	const handleChange = () =>{
+	const handleChange = (e) =>{
 		setRegisterForm({...registerForm , [e.target.name] : e.target.value})
 	}
 
-	const handleSubmit =  (e) => {
+	const handleSubmit =  async(e) => {
 		e.preventDefault();
 
 		if(!registerForm.name){
@@ -31,7 +31,31 @@ const Register = () => {
 		if(!registerForm.password){
 			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
 		}
+
+		try {
+			
+			const response = await fetch('http://localhost:8000/api/register', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(registerForm)
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Registration successful:', data);
+			} 
+			else {
+				console.error('Registration failed with status:', response.status);
+			}
+		} 
+		catch (error) {
+			console.error('Error during registration:', error);
+		}
+
 	}
+	
 
 
     const dispatch = useDispatch()
@@ -44,7 +68,7 @@ const Register = () => {
     <>
      	<div className="fixed z-20 bg-black bg-opacity-40 inset-0 overflow-y-auto">
 			<div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 backdrop-filter backdrop-blur-sm">
-				<div className="fixed inset-0 transition-opacity" aria-hidden="true"onClick={() => handleRegister()}>
+				<div className="fixed inset-0 transition-opacity" aria-hidden="true" onClick={() => handleRegister()}>
 					<div className="absolute inset-0 opacity-25 bg-gray-800 bg-opacity-50" /></div>
 
 					<span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">

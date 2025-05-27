@@ -12,12 +12,13 @@ const Login = () => {
 		password: ''
 	})
 	const [errors, setErrors] = useState({});
+	const dispatch = useDispatch()
 
 	const handleChange = (e) =>{
 		setLoginForm({ ...loginForm ,[ e.target.name ] : e.target.value })
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async(e) => {
 		e.preventDefault();
 
 		if(!loginForm.email){
@@ -27,9 +28,35 @@ const Login = () => {
 		if(!loginForm.password){
 			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
 		}
-	}
 
-	const dispatch = useDispatch()
+
+		try{
+			await fetch('http://localhost:8000/sanctum/csrf-cookie', {
+				credentials: 'include' 
+			});
+
+			const response = await fetch('http://localhost:8000/api/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				credentials: 'include', 
+				body: JSON.stringify(loginForm)
+			});
+
+			if (response.ok) {		
+				const data = await response.json();
+				console.log('Login successful:', data);
+				dispatch(toggleLogin(false))
+			}
+			else {
+				console.error('Login failed with status:', response.status);
+			}
+		}
+		catch (error) {
+			console.error('Error during login:', error);
+		}
+	}
 
 	const handleLogin = () => {
 		dispatch(toggleLogin(false))
