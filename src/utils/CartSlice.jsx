@@ -9,16 +9,19 @@ const CartSlice=createSlice({
     reducers:{
 		addItem:(state,action)=>{
 			state.items.push(action.payload);
+			localStorage.setItem('cartItems', JSON.stringify(state.items));
 		},
 		clearCart:(state)=>{
 			state.items=[];
+			localStorage.removeItem('cartItems');
 		},
 		removeItem:(state,action)=>{
 			const next=state.items.filter((index)=>{
 				const dishCardId = index.dish?.info?.id || index.card?.info?.id;
 				return dishCardId !== action.payload.id
 			})
-			state.items=next
+			state.items=next;
+			localStorage.setItem('cartItems', JSON.stringify(next));
 		},
 		increaseQuantity:(state,action)=>{
 			const item = state.cartItemsQuantity[action.payload.id] || { quantity: 1, price:action.payload.price/100 };

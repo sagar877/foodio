@@ -1,6 +1,6 @@
 
 import FoodCard from './FoodCard';
-import { useEffect, useState, useRef} from 'react';
+import { useEffect, useState, useRef, createContext} from 'react';
 import { useOnline } from '../utils/useOnline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DishCarousel from './DishCarousel';
@@ -26,8 +26,8 @@ function Home() {
 	const[filterrestorant,setFilterRestorant]=useState([])
 	const isOnline=useOnline()
 	const sectionRef = useRef(null);
-	const isLoggedIn = useSelector( store=>store.app.isLoggedIn)
-	const isRegistered = useSelector( store=>store.app.isRegistered)
+	const isLoggedInModal = useSelector( store=>store.app.isLoggedInModal)
+	const isRegisteredModal = useSelector( store=>store.app.isRegisteredModal)
 
 	useEffect(()=>{
 		getRestaurantlist();
@@ -54,8 +54,8 @@ function Home() {
 
   	return allrestorant.length===0 ? <div className='flex flex-1 justify-center items-center h-full text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>:(
 		<>
-			{ isLoggedIn && <Login/>}
-			{ isRegistered && <Register/>}
+			{ isLoggedInModal && <Login/>}
+			{ isRegisteredModal && <Register/>}
 			<div className='bg-gradient-to-t from-black/70 to-white/5 h-screen px-20 max-lg:px-10 flex flex-col' >
 				<video class="absolute -z-10 inset-0 object-cover" autoPlay muted loop  playsInline id="myVideo">
 					<source src={background} type="video/mp4" />
@@ -100,7 +100,7 @@ function Home() {
                 	</AnimatePresence> */}
 				</div>	
 			</div>
-
+			
 			<DishCarousel dishes={dishes}/>
 			
 			<div ref={sectionRef} className='flex flex-col py-8 mt-4 px-5'>  

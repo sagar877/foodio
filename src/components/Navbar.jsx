@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function Navbar() {
 
 	const dispatch = useDispatch()
-	const isLoggedIn = useSelector(store => store.app.isLoggedIn)
+	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 
 	const location = useLocation();
   	const isHome = location.pathname === '/';

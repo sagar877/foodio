@@ -4,6 +4,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { toggleRegister } from '../utils/AppSlice'
+import { base_url } from './Constants'
 
 const Register = () => {
 
@@ -34,7 +35,7 @@ const Register = () => {
 
 		try {
 			
-			const response = await fetch('http://localhost:8000/api/register', {
+			const response = await fetch(base_url + '/api/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

@@ -4,18 +4,18 @@ import React from 'react'
 const AppSlice = createSlice({
     name:'app',
     initialState:{
-        isLoggedIn:false,
-        isRegistered:false,
+        isLoggedInModal:false,
+        isRegisteredModal:false,
     },
     reducers:{
         toggleLogin:(state,action)=>{
-            state.isLoggedIn = action.payload
+            state.isLoggedInModal = action.payload
         },
         toggleRegister:(state,action)=>{
-            state.isRegistered = action.payload
-        }
+            state.isRegisteredModal = action.payload
+        },
     }
 })
 
-export const { toggleLogin , toggleRegister } = AppSlice.actions
+export const { toggleLogin , toggleRegister, setLogin} = AppSlice.actions
 export default AppSlice.reducer

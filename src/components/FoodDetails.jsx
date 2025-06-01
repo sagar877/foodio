@@ -15,8 +15,8 @@ function FoodDetails() {
     const [menu,setMenu]=useState({});
     const[extra,setExtra]=useState({});
 
-	const isLoggedIn = useSelector(store => store.app.isLoggedIn)
-	const isRegistered = useSelector( store=>store.app.isRegistered)
+	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
+	const isRegisteredModal = useSelector( store=>store.app.isRegisteredModal)
     
 	useEffect(()=>{
 		getDetails()
@@ -33,8 +33,8 @@ function FoodDetails() {
     
   	return !Object.entries(data).length ? <div className='flex justify-center items-center flex-1 text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>: (
 		<>
-		{ isRegistered && <Register/>}
-		{isLoggedIn && <Login/>}
+		{ isRegisteredModal && <Register/>}
+		{isLoggedInModal && <Login/>}
 			<div className='flex flex-col py-5'>
 				<div className='px-10'>
 					<h1 className='font-bold text-2xl mb-4'>{data.name}</h1>

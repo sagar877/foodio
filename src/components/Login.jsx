@@ -1,9 +1,9 @@
-import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { useDispatch } from 'react-redux'
+import { useDispatch , useSelector} from 'react-redux'
 import { useState } from 'react'
-import { toggleLogin , toggleRegister } from '../utils/AppSlice'
+import { toggleLogin , toggleRegister , setLogin } from '../utils/AppSlice'
+import { base_url } from './Constants'
 
 const Login = () => {
 
@@ -31,14 +31,15 @@ const Login = () => {
 
 
 		try{
-			await fetch('http://localhost:8000/sanctum/csrf-cookie', {
+			await fetch(base_url + '/sanctum/csrf-cookie', {
 				credentials: 'include' 
 			});
 
-			const response = await fetch('http://localhost:8000/api/login', {
+			const response = await fetch(base_url +'/api/login', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
 				credentials: 'include', 
 				body: JSON.stringify(loginForm)
@@ -47,6 +48,7 @@ const Login = () => {
 			if (response.ok) {		
 				const data = await response.json();
 				console.log('Login successful:', data);
+				localStorage.setItem('login', true);
 				dispatch(toggleLogin(false))
 			}
 			else {
