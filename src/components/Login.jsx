@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch , useSelector} from 'react-redux'
+import { AuthContext } from './AuthContext'
+import { useContext } from 'react'
 import { useState } from 'react'
 import { toggleLogin , toggleRegister , setLogin } from '../utils/AppSlice'
 import { base_url } from './Constants'
@@ -11,6 +13,7 @@ const Login = () => {
 		email: '',
 		password: ''
 	})
+	const { login } = useContext(AuthContext);
 	const [errors, setErrors] = useState({});
 	const dispatch = useDispatch()
 
@@ -29,17 +32,27 @@ const Login = () => {
 			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
 		}
 
-
-		try{
+		try
+		{
 			await fetch(base_url + '/sanctum/csrf-cookie', {
 				credentials: 'include' 
 			});
+
+			const getCookie = (name) => {
+				const value = `; ${document.cookie}`;
+				const parts = value.split(`; ${name}=`);
+				if (parts.length === 2) return parts.pop().split(';').shift();
+			}
+
+			const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
+			console.log('CSRF Token:', csrfToken);
 
 			const response = await fetch(base_url +'/api/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
+					'X-XSRF-TOKEN': csrfToken
 				},
 				credentials: 'include', 
 				body: JSON.stringify(loginForm)
@@ -47,8 +60,27 @@ const Login = () => {
 
 			if (response.ok) {		
 				const data = await response.json();
-				console.log('Login successful:', data);
-				localStorage.setItem('login', true);
+				console.log('Login successful:', data);	
+				login();
+
+				const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
+
+				if(cartData.length === 0) {
+					return;
+				}
+
+				const rest = await fetch(base_url + '/api/sync-cart', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+						'X-XSRF-TOKEN': csrfToken
+					},
+					credentials: 'include',
+					body: JSON.stringify({cart : cartData})
+				});
+				
+				localStorage.removeItem('cartItems');
 				dispatch(toggleLogin(false))
 			}
 			else {

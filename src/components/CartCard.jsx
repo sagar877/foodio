@@ -18,6 +18,23 @@ const CartCard = (item) => {
 		dispatch(removeItem(info))
 	}
 
+	const getUser = async () => {
+		const response = await fetch('http://localhost:8000/api/user', {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Accept': 'application/json'
+			
+			}
+		});
+
+		if (response.ok) {
+			const user = await response.json();
+			console.log('User data:', user);
+		} else {
+			console.error('Failed to fetch user, status:', response.status);
+		}
+	};
   return (
     <div>
       	<div className="w-full h-auto relative cursor-default flex justify-between border p-4 rounded-lg  bg-white my-2">
@@ -39,7 +56,7 @@ const CartCard = (item) => {
 				</div>
 				{ info.price != undefined ? <div className="font-[gilroy-bold] flex justify-between border-t pt-2"> Totalprice: <span className="font-[gilroy-bold]">₹ {price/100}</span></div> : null}
 				<div className='flex items-center gap-2'>
-					<button className="w-full text-white p-1.5 mt-2 text-sm rounded-lg bg-green-700" >Order now</button>
+					<button onClick={() => {getUser()}} className="w-full text-white p-1.5 mt-2 text-sm rounded-lg bg-green-700" >Order now</button>
 				</div>
 			</div>
 			<button className="absolute right-3 top-1 text-red-700 cursor-default" onClick={()=> handleRemove(info)}>

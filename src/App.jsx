@@ -1,10 +1,9 @@
 import 	Home from './components/Home';
-import  About from './components/About';
 import  Error from './components/Error';
 import {Routes,Route} from "react-router-dom"
 import FoodDetails from './components/FoodDetails';
 import Navbar from './components/Navbar';
-import ContactUs from './components/ContactUs'
+import { AuthProvider } from './components/AuthContext';
 import Footer from './components/Footer';
 import { Provider } from 'react-redux';
 import Store from './utils/Store';
@@ -13,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 import RestaurantListByDish from './components/RestaurantListByDish';
 
 
-function App(){
+const App = () => {
 
 	const location = useLocation()
 	const hideFooterOn =['/cart', '/about'];
@@ -22,6 +21,7 @@ function App(){
 		<>
 			<div className="min-h-screen flex flex-col">
 				<Provider store={Store}>
+					<AuthProvider>
 					<Navbar />
 					<Routes> 
 						<Route
@@ -40,6 +40,7 @@ function App(){
 							path='*'
 							element={<Error/>}/>
 					</Routes>
+					</AuthProvider>
 				</Provider>
 				{ !hideFooterOn.includes(location.pathname) && <Footer />}
 			</div>

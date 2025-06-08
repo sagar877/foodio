@@ -11,14 +11,8 @@ export const Cart=()=>{
     const userSelect=useSelector(Store=>Store.cart.items)
 	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 	const isRegisteredModal = useSelector(store => store.app.isRegisteredModal)
-
-	const [ isLoggedIn , setIsLoggedIn ] = useState(false)
    
     const dispatch=useDispatch()
-
-	useEffect(() =>{
-		setIsLoggedIn(localStorage.getItem('login') == true ? true : false)
-	})
 	
     const handleClear=()=>{
       dispatch(clearCart())

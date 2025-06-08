@@ -19,11 +19,11 @@ function FoodCard({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) {
 				alt="dish"/>
 			<div className='px-4 py-2'>
 				<p className='font-bold text-base line-clamp-2'>{name}</p>
-				<p className="flex gap-1 items-center">
-					<div className='bg-green-700 w-4 h-4 rounded-full flex justify-center items-center'>
+				<div className="flex gap-1 items-center">
+					<p className='bg-green-700 w-4 h-4 rounded-full flex justify-center items-center'>
 						<FontAwesomeIcon className='fill-white w-2.5 stroke-white text-white' icon={faStar} />
-					</div>{avgRating}<span className='font-semibold'>. {sla.slaString}</span>
-				</p>
+					</p>{avgRating}<span className='font-semibold'>. {sla.slaString}</span>
+				</div>
 				<p className='flex flex-wrap gap-2 text-sm text-neutral-700 my-1 line-clamp-1'>{cuisines.join(', ')}</p>
 				<p >{areaName}</p>
 			</div>

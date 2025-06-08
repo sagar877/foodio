@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { AuthContext } from './AuthContext'
+import { useContext } from 'react'
 import { toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
 
@@ -15,6 +17,7 @@ const Register = () => {
 	});
 
 	const [errors, setErrors] = useState({});
+	const { login } = useContext(AuthContext);
 
 	const handleChange = (e) =>{
 		setRegisterForm({...registerForm , [e.target.name] : e.target.value})
@@ -34,18 +37,33 @@ const Register = () => {
 		}
 
 		try {
-			
+
+			await fetch(base_url + '/sanctum/csrf-cookie', {
+				credentials: 'include' 
+			});
+
+			const getCoookie = (name) => {
+				const value = `; ${document.cookie}`;
+				const parts = value.split(`; ${name}=`);
+				if (parts.length === 2) return parts.pop().split(';').shift();
+			}
+
+			const csrfToken = decodeURIComponent(getCoookie('XSRF-TOKEN'));
+
 			const response = await fetch(base_url + '/api/register', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'X-XSRF-TOKEN': csrfToken
 				},
+				credentials: 'include',
 				body: JSON.stringify(registerForm)
 			});
 
 			if (response.ok) {
+				login();	
 				const data = await response.json();
-				console.log('Registration successful:', data);
 			} 
 			else {
 				console.error('Registration failed with status:', response.status);
