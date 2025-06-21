@@ -1,10 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { useDispatch , useSelector} from 'react-redux'
-import { AuthContext } from './AuthContext'
-import { useContext } from 'react'
+import { useDispatch} from 'react-redux'
 import { useState } from 'react'
-import { toggleLogin , toggleRegister , setLogin } from '../utils/AppSlice'
+import { toggleLogin , toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
 
 const Login = () => {
@@ -13,7 +11,6 @@ const Login = () => {
 		email: '',
 		password: ''
 	})
-	const { login } = useContext(AuthContext);
 	const [errors, setErrors] = useState({});
 	const dispatch = useDispatch()
 
@@ -45,7 +42,6 @@ const Login = () => {
 			}
 
 			const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
-			console.log('CSRF Token:', csrfToken);
 
 			const response = await fetch(base_url +'/api/login', {
 				method: 'POST',
@@ -59,10 +55,7 @@ const Login = () => {
 			});
 
 			if (response.ok) {		
-				const data = await response.json();
-				console.log('Login successful:', data);	
-				login();
-
+				const data = await response.json();	
 				const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
 
 				if(cartData.length === 0) {

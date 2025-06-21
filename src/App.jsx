@@ -21,26 +21,26 @@ const App = () => {
 		<>
 			<div className="min-h-screen flex flex-col">
 				<Provider store={Store}>
-					<AuthProvider>
-					<Navbar />
-					<Routes> 
-						<Route
-							path='/'
-							element={<Home/>}/>
-						<Route 
-							path="/restaurant/:id"
-							element={< FoodDetails/>}/>
-						<Route 
-							path="/dish/:collectionId"
-							element={< RestaurantListByDish/>}/>
-						<Route 
-							path="/Cart"
-							element={<Cart/>}/>
-						<Route 
-							path='*'
-							element={<Error/>}/>
-					</Routes>
-					</AuthProvider>
+					
+						<Navbar />
+						<Routes> 
+							<Route
+								path='/'
+								element={<Home/>}/>
+							<Route 
+								path="/restaurant/:id"
+								element={< FoodDetails/>}/>
+							<Route 
+								path="/dish/:collectionId"
+								element={< RestaurantListByDish/>}/>
+							<Route 
+								path="/Cart"
+								element={<Cart/>}/>
+							<Route 
+								path='*'
+								element={<Error/>}/>
+						</Routes>
+					
 				</Provider>
 				{ !hideFooterOn.includes(location.pathname) && <Footer />}
 			</div>

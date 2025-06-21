@@ -4,7 +4,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { AuthContext } from './AuthContext'
-import { useContext } from 'react'
 import { toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
 
@@ -17,7 +16,6 @@ const Register = () => {
 	});
 
 	const [errors, setErrors] = useState({});
-	const { login } = useContext(AuthContext);
 
 	const handleChange = (e) =>{
 		setRegisterForm({...registerForm , [e.target.name] : e.target.value})
@@ -60,14 +58,6 @@ const Register = () => {
 				credentials: 'include',
 				body: JSON.stringify(registerForm)
 			});
-
-			if (response.ok) {
-				login();	
-				const data = await response.json();
-			} 
-			else {
-				console.error('Registration failed with status:', response.status);
-			}
 		} 
 		catch (error) {
 			console.error('Error during registration:', error);

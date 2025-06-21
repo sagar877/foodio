@@ -1,12 +1,8 @@
 
 import { createContext, useState, useEffect } from 'react';
 import {base_url} from './Constants';
-import { useDispatch } from 'react-redux';
-import { toggleLogin } from '../utils/AppSlice';
-
 
 export const AuthContext = createContext();
-
 
 export function AuthProvider({ children }) {
 	const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -26,7 +22,7 @@ const logout = async () => {
 			if (parts.length === 2) return parts.pop().split(';').shift();
 		};
 		const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
-		console.log('CSRF Token:', csrfToken);
+		
 		const response = await fetch(base_url + '/api/logout', {
 			method: 'POST',
 			headers: {
