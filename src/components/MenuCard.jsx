@@ -2,8 +2,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../utils/CartSlice';
 import { base_url } from './Constants';
+import { useGetCookie } from '../utils/useGetCookie';
 
 const MenuCard = ({item}) => {
+
+	const csrf = useGetCookie();
 
     const info = item.card?.info ? item?.card?.info : item.dish?.info
 	const itemId = item.card?.info?.id || item.dish?.info?.id;
@@ -16,24 +19,18 @@ const MenuCard = ({item}) => {
   		return cartItemId === itemId;
 	});
 
-	const getCookie = (name) => {
-		const value = `; ${document.cookie}`;
-		const parts = value.split(`; ${name}=`);
-		if (parts.length === 2) return parts.pop().split(';').shift();
-	}
-	const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN')) || '';
-
     const handleAdd = async (item) =>{
 		const response = await fetch(base_url+'/api/add-to-cart', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
-				'X-XSRF-TOKEN': csrfToken
+				'X-XSRF-TOKEN': csrf
 			},
 			credentials: 'include', 
 			body: JSON.stringify({cart : item})
 		});
+
 		if (response.ok) {
 			const data = await response.json();
 			dispatch(addItem(item))

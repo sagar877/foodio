@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch} from 'react-redux'
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 import { toggleLogin , toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
+import { useGetCookie } from '../utils/useGetCookie'
 
 const Login = () => {
 
@@ -11,6 +12,8 @@ const Login = () => {
 		email: '',
 		password: ''
 	})
+	const csrf = useGetCookie();
+
 	const [errors, setErrors] = useState({});
 	const dispatch = useDispatch()
 
@@ -35,27 +38,20 @@ const Login = () => {
 				credentials: 'include' 
 			});
 
-			const getCookie = (name) => {
-				const value = `; ${document.cookie}`;
-				const parts = value.split(`; ${name}=`);
-				if (parts.length === 2) return parts.pop().split(';').shift();
-			}
-
-			const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
-
 			const response = await fetch(base_url +'/api/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
-					'X-XSRF-TOKEN': csrfToken
+					'X-XSRF-TOKEN': csrf
 				},
 				credentials: 'include', 
 				body: JSON.stringify(loginForm)
 			});
 
 			if (response.ok) {		
-				const data = await response.json();	
+				const data = await response.json();
+				localStorage.setItem('login' , true)
 				const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
 
 				if(cartData.length === 0) {
@@ -67,7 +63,7 @@ const Login = () => {
 					headers: {
 						'Content-Type': 'application/json',
 						'Accept': 'application/json',
-						'X-XSRF-TOKEN': csrfToken
+						'X-XSRF-TOKEN': csrf
 					},
 					credentials: 'include',
 					body: JSON.stringify({cart : cartData})

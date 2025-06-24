@@ -1,62 +1,41 @@
+import { createContext, useContext, useState, useEffect } from 'react';
 
-import { createContext, useState, useEffect } from 'react';
-import {base_url} from './Constants';
+// Create context
+const AuthContext = createContext();
 
-export const AuthContext = createContext();
+// Provider component
+export const AuthProvider = ({ children }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        !!localStorage.getItem('login')
+    );
 
-export function AuthProvider({ children }) {
-	const [isLoggedIn, setIsLoggedIn] = useState(() => {
-	return localStorage.getItem('login') === 'true';
-});
+    useEffect(() => {
+        const handleAuthChange = () => {
+            setIsAuthenticated(!!localStorage.getItem('login'));
+        };
 
-const login = () => {
-	localStorage.setItem('login', 'true');
-	setIsLoggedIn(true);
+        window.addEventListener('authChanged', handleAuthChange);
+        return () => window.removeEventListener('authChanged', handleAuthChange);
+    }, []);
+
+    const login = () => {
+        localStorage.setItem('login', 'true');
+        setIsAuthenticated(true);
+        window.dispatchEvent(new Event('authChanged'));
+    };
+
+    const logout = () => {
+        localStorage.removeItem('login');
+        setIsAuthenticated(false);
+        window.dispatchEvent(new Event('authChanged'));
+    };
+
+    return (
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
-const logout = async () => {
-	try {
-		const getCookie = (name) => {
-			const value = `; ${document.cookie}`;
-			const parts = value.split(`; ${name}=`);
-			if (parts.length === 2) return parts.pop().split(';').shift();
-		};
-		const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
-		
-		const response = await fetch(base_url + '/api/logout', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'X-XSRF-TOKEN': csrfToken
-			},
-			credentials: 'include'
-		});
-		if (response.ok) {
-			localStorage.removeItem('login');
-			setIsLoggedIn(false)
-		}
-	}
-	catch (error) {
-		console.error('Logout failed:', error);
-	}
-}
-
-
-
-useEffect(() => {
-	const handleStorage = (event) => {
-		if (event.key === 'login') {
-		setIsLoggedIn(event.newValue === 'true');
-		}
-	};
-	window.addEventListener('storage', handleStorage);
-	return () => window.removeEventListener('storage', handleStorage);
-}, []);
-
-  	return (
-		<AuthContext.Provider value={{ isLoggedIn, login, logout }}>
-			{children}
-		</AuthContext.Provider>
-  	);
-}
+// Hook to use the context
+export const useAuth = () => useContext(AuthContext);

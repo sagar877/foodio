@@ -5,10 +5,13 @@ import { removeItem , increaseQuantity , decreaseQuantity } from "../utils/CartS
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { base_url } from './Constants';
+import { useGetCookie } from '../utils/useGetCookie';
+
 
 const CartCard = (item) => {
 
 	const info = item.card?.info || item.dish?.info
+	const csrf = useGetCookie()
 
 	const dispatch=useDispatch()
 
@@ -20,19 +23,12 @@ const CartCard = (item) => {
 	}
 
 	const handlePayment = async () => {
-		const getCookie = (name) => {
-			const value = `; ${document.cookie}`;
-			const parts = value.split(`; ${name}=`);
-			if (parts.length === 2) return parts.pop().split(';').shift();
-		}
-
-		const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
 		const response = await fetch(base_url +'/api/create-order', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
-				'X-XSRF-TOKEN': csrfToken
+				'X-XSRF-TOKEN': csrf
 			},
 			credentials: 'include', 
 			body: JSON.stringify({amount : price/100})

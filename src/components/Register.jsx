@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { AuthContext } from './AuthContext'
 import { toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
+import { useGetCookie } from '../utils/useGetCookie'
 
 const Register = () => {
 
@@ -14,6 +15,7 @@ const Register = () => {
 		email: '',
 		password: ''
 	});
+	const csrf = useGetCookie();
 
 	const [errors, setErrors] = useState({});
 
@@ -35,25 +37,16 @@ const Register = () => {
 		}
 
 		try {
-
 			await fetch(base_url + '/sanctum/csrf-cookie', {
 				credentials: 'include' 
 			});
-
-			const getCoookie = (name) => {
-				const value = `; ${document.cookie}`;
-				const parts = value.split(`; ${name}=`);
-				if (parts.length === 2) return parts.pop().split(';').shift();
-			}
-
-			const csrfToken = decodeURIComponent(getCoookie('XSRF-TOKEN'));
 
 			const response = await fetch(base_url + '/api/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
-					'X-XSRF-TOKEN': csrfToken
+					'X-XSRF-TOKEN': csrf
 				},
 				credentials: 'include',
 				body: JSON.stringify(registerForm)

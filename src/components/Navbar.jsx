@@ -7,10 +7,14 @@ import { useEffect , useState} from "react";
 import { base_url } from './Constants';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useGetCookie } from "../utils/useGetCookie";
+import { useAuthenticated } from "../utils/useAuthenticated";
 
 function Navbar() {
 
-	const[isAuthenticated, setIsAuthenticated] = useState(false);
+	const csrf = useGetCookie()
+	const auth = useAuthenticated();
+	
 	const dispatch = useDispatch()
 	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 
@@ -21,48 +25,21 @@ function Navbar() {
 		dispatch(toggleLogin(true))
 	}
 
-	useEffect(() => {
-		isLoggedIn();
-	},[isAuthenticated]);
-
-	const isLoggedIn = async () => {
-		const checkStatus = await fetch(base_url+'/api/check-authenticated', {
-			method: 'GET',	
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			}
-		});
-		if (checkStatus.ok) {
-			const data = await checkStatus.json();
-			setIsAuthenticated(true);
-		} else {
-			console.error('Failed to check login status');
-			return false;
-		}
-	}
-
 	const handleLogout = async () => {
+		console.log(csrf);
 		try {	
-			const getCookie = (name) => {
-				const value = `; ${document.cookie}`;
-				const parts = value.split(`; ${name}=`); 
-				if (parts.length === 2) return parts.pop().split(';').shift();
-			}
-			const csrfToken = decodeURIComponent(getCookie('XSRF-TOKEN'));
 			const response = await fetch(base_url+'/api/logout', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
-					'X-XSRF-TOKEN': csrfToken
+					'X-XSRF-TOKEN': csrf
 				},
 				credentials: 'include'
 			});
 			if (response.ok) {	
 				const data = await response.json();
-				setIsAuthenticated(false);
+				localStorage.removeItem('login');
 			}
 			else {
 				console.error('Logout failed with status:', response.status);
@@ -80,7 +57,7 @@ function Navbar() {
 			<div className={`bg-lime-600 bg-opacity-5 flex items-center h-16  justify-between px-10`}>  
 				<a href="/" className={`${ isHome? 'text-white' : 'text-black'} font-[merienda] text-2xl font-semibold`}>Foodio</a>
 				<div className='flex items-center gap-3'>
-					{isAuthenticated ?
+					{auth ?
 						<button onClick={() => handleLogout()} className={`${ isHome? 'bg-transparent px-3' : 'bg-red-600 text-sm px-4'} h-8 text-white font-medium rounded-xl`}>Logout</button> 
 						:<button onClick={() =>handleLogin()} className={`${ isHome? 'bg-transparent px-3' : 'bg-green-600 text-sm px-4'} h-8 text-white font-medium rounded-xl`}>Log In</button> 
 					}
