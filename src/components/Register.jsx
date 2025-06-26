@@ -35,26 +35,6 @@ const Register = () => {
 			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
 		}
 
-		try {
-			await fetch(base_url + '/sanctum/csrf-cookie', {
-				credentials: 'include' 
-			});
-
-			const response = await fetch(base_url + '/api/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'X-XSRF-TOKEN': csrf
-				},
-				credentials: 'include',
-				body: JSON.stringify(registerForm)
-			});
-		} 
-		catch (error) {
-			console.error('Error during registration:', error);
-		}
-
 	}
 	
     const dispatch = useDispatch()

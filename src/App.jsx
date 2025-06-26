@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import { Provider } from 'react-redux';
 import Store from './utils/Store';
 import { useLocation } from 'react-router-dom';
+import { AuthProvider } from './components/AuthContext';
 
 const App = () => {
 
@@ -14,8 +15,10 @@ const App = () => {
 		<>
 			<div className="min-h-screen flex flex-col">
 				<Provider store={Store}>
-					<Navbar />
-					<Navigation/>
+					<AuthProvider>
+						<Navbar />
+						<Navigation/>
+					</AuthProvider>
 				</Provider>
 				{ !hideFooterOn.includes(location.pathname) && <Footer />}
 			</div>

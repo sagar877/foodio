@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch} from 'react-redux'
 import { useState , useEffect } from 'react'
+import { useAuth } from './AuthContext'
 import { toggleLogin , toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
 import { useGetCookie } from '../utils/useGetCookie'
@@ -12,6 +13,7 @@ const Login = () => {
 		email: '',
 		password: ''
 	})
+	const { login , isAuthenticated } = useAuth();
 	const csrf = useGetCookie();
 
 	const [errors, setErrors] = useState({});
@@ -34,21 +36,8 @@ const Login = () => {
 
 		try
 		{
-			await fetch(base_url + '/sanctum/csrf-cookie', {
-				credentials: 'include' 
-			});
-
-			const response = await fetch(base_url +'/api/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'X-XSRF-TOKEN': csrf
-				},
-				credentials: 'include', 
-				body: JSON.stringify(loginForm)
-			});
-
+			const response = await login({ loginForm });
+		
 			if (response.ok) {		
 				const data = await response.json();
 				localStorage.setItem('login' , true)
