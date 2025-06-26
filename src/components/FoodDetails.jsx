@@ -13,7 +13,6 @@ function FoodDetails() {
     const { id }=useParams();
     const [data,setData]=useState({});
     const [menu,setMenu]=useState({});
-    const[extra,setExtra]=useState({});
 
 	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 	const isRegisteredModal = useSelector( store=>store.app.isRegisteredModal)
@@ -27,8 +26,7 @@ function FoodDetails() {
     	const response=await data.json();
 	
        	setData(response.data.cards[2].card.card.info)
-   		setMenu(response.data.cards[5].groupedCard.cardGroupMap.REGULAR.cards[1].card.card.carousel)
-  	 	setExtra(response.data.cards[5].groupedCard.cardGroupMap.REGULAR.cards[1].card.card.itemCards)
+   		setMenu(response.data.cards[5].groupedCard.cardGroupMap.REGULAR.cards)
    	}
     
   	return !Object.entries(data).length ? <div className='flex justify-center items-center flex-1 text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>: (
@@ -57,13 +55,11 @@ function FoodDetails() {
 				<div className='px-10 my-5'>
 					<h1 className='font-bold my-4 text-lg'>Menu</h1>
 					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
-						{extra===undefined? 
-							Object.values(menu).map((item)=>{
+						{
+							menu.map((item)=> {
 								return <MenuCard key={item?.dish?.id} item={item} />
 							})
-							:Object.values(extra).map((item)=>{
-								return <MenuCard key={item?.card?.info?.id} item={item} />
-						})}
+						}
 					</div>
 				</div>
 			</div>
