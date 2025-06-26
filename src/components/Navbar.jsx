@@ -27,16 +27,7 @@ function Navbar() {
 
 	const handleLogout = async () => {
 		try {	
-			 
-			const response = await login();
-
-			if (response.ok) {	
-				const data = await response.json();
-				localStorage.removeItem('login');
-			}
-			else {
-				console.error('Logout failed with status:', response.status);
-			}
+			await logout();
 		} catch (error) {
 			console.error('Error during logout:', error);
 		}

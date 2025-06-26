@@ -10,32 +10,25 @@ export const AuthProvider = ({ children }) => {
     const csrf = useGetCookie();
     const [isAuthenticated, setIsAuthenticated] = useState();
 
-    useEffect(() => {
-    
-        getSessionId();
-    
-    }, []);
+    useEffect(()=>{
+        checkAuth();
+    },[])
 
-    const getSessionId = async () =>{
-        await fetch(base_url + '/sanctum/csrf-cookie', {
-            credentials: 'include' 
+
+    const checkAuth = async () =>{
+
+        await fetch(base_url + "/sanctum/csrf-cookie", {
+                credentials: "include"
         });
+
+        const response = await fetch(base_url + '/api/check-authenticated',{
+            credentials:'include',
+        });
+        if(response.ok){
+            const data = await response.json();
+            setIsAuthenticated(data.authenticated);
+        }
     }
-
-    // const checkAuth = async () => {
-    //     const res = await getSessionId();
-    //     console.log('Session ID fetched:', res);
-
-    //     const response = await fetch(base_url + '/api/user', {
-    //         credentials: 'include',
-    //         headers: {
-    //             'Accept': 'application/json'
-    //         }
-    //     });
-
-    //     setIsAuthenticated(response.ok);
-    // };
-
 
     const register = async ({...data}) => {
         const response = await fetch(base_url + '/api/register', {
@@ -76,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
+    
         const response = await fetch(base_url+'/api/logout', {
             method: 'POST',
             headers: {

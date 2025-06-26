@@ -36,34 +36,33 @@ const Login = () => {
 
 		try
 		{
-			const response = await login({ loginForm });
+			 await login({ ...loginForm });
 		
-			if (response.ok) {		
-				const data = await response.json();
-				localStorage.setItem('login' , true)
+			// if (response.ok) {		
+			// 	const data = await response.json();
 				const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
 
 				if(cartData.length === 0) {
 					return;
 				}
 
-				const rest = await fetch(base_url + '/api/sync-cart', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json',
-						'X-XSRF-TOKEN': csrf
-					},
-					credentials: 'include',
-					body: JSON.stringify({cart : cartData})
-				});
+				// const rest = await fetch(base_url + '/api/sync-cart', {
+				// 	method: 'POST',
+				// 	headers: {
+				// 		'Content-Type': 'application/json',
+				// 		'Accept': 'application/json',
+				// 		'X-XSRF-TOKEN': csrf
+				// 	},
+				// 	credentials: 'include',
+				// 	body: JSON.stringify({cart : cartData})
+				// });
 				
-				localStorage.removeItem('cartItems');
-				dispatch(toggleLogin(false))
-			}
-			else {
-				console.error('Login failed with status:', response.status);
-			}
+				// localStorage.removeItem('cartItems');
+				// dispatch(toggleLogin(false))
+			// }
+			// else {
+			// 	console.error('Login failed with status:', response.status);
+			// }
 		}
 		catch (error) {
 			console.error('Error during login:', error);
