@@ -8,7 +8,7 @@ import MenuCard from './MenuCard';
 import Login from './Login';
 import Register from './Register'
 
-function FoodDetails() {
+const FoodDetails = () => {
 
     const { id }=useParams();
     const [data,setData]=useState({});
@@ -54,11 +54,11 @@ function FoodDetails() {
 				</div>
 				<div className='px-10 my-5'>
 					<h1 className='font-bold my-4 text-lg'>Menu</h1>
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
+					<div>
 						{
-							menu.map((item)=> {
-								return <MenuCard key={item?.dish?.id} item={item} />
-							})
+							menu.filter((item)=> {
+								return item?.card?.card?.['@type'] === 'type.googleapis.com/swiggy.presentation.food.v2.ItemCategory'
+							}).map((item) => <MenuCard key={item?.dish?.id} item={item} />)
 						}
 					</div>
 				</div>
