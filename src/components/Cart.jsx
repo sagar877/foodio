@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { clearCart } from "../utils/CartSlice";
 import Login from './Login'
 import Register from './Register';
-import { useEffect } from "react";
 
 export const Cart=()=>{
 

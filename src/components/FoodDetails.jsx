@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
-import { faStar} from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MenuCard from './MenuCard';
+import MenuContainer from './MenuContainer';
 import Login from './Login';
 import Register from './Register'
+import RestaurantInfo from './RestaurantInfo'
 
 const FoodDetails = () => {
 
-    const { id }=useParams();
-    const [data,setData]=useState({});
-    const [menu,setMenu]=useState({});
-
+    const { id }= useParams();
+    const [ data, setData ]= useState({});
+    const [ menu, setMenu ]= useState({});
+	const [ activeTab, setActiveTab ] = useState(0);
+	
 	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 	const isRegisteredModal = useSelector( store=>store.app.isRegisteredModal)
+	
     
 	useEffect(()=>{
 		getDetails()
@@ -34,31 +35,29 @@ const FoodDetails = () => {
 		{ isRegisteredModal && <Register/>}
 		{isLoggedInModal && <Login/>}
 			<div className='flex flex-col py-5'>
-				<div className='px-10'>
-					<h1 className='font-bold text-2xl mb-4'>{data.name}</h1>
-					<div className='relative h-56 w-full border rounded-xl overflow-hidden'>
-						<div className='absolute left-10 top-6 h-44 w-96 p-5 border rounded-lg bg-white border-transparent z-10'>
-							<div className='flex gap-2 font-bold items-center'> 
-								<div className='bg-green-700 w-5 h-5 rounded-full flex justify-center items-center'>
-									<FontAwesomeIcon className='fill-white w-3 stroke-white text-white' icon={faStar} />
-								</div>{data.avgRating} .<span>{data.totalRatingsString}</span>.<span>{data.costForTwoMessage}</span>
-							</div>
-							<div className='font-bold my-3'>{data.cuisines.join(",")}</div>
-							<div><span className='font-bold'>Location :</span> {data.locality}({data.areaName})</div>
-							<div className='line-clamp-1'>{data?.labels[1]?.message}</div>
-						</div>
-						<img className="object-cover w-full" loading='lazy' src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+data.cloudinaryImageId}
-						alt="detail"/>
-					</div>
-
-				</div>
+				<RestaurantInfo data={data}/>
 				<div className='px-10 my-5'>
 					<h1 className='font-bold my-4 text-lg'>Menu</h1>
-					<div>
+					<div className='flex gap-x-3'>
 						{
 							menu.filter((item)=> {
 								return item?.card?.card?.['@type'] === 'type.googleapis.com/swiggy.presentation.food.v2.ItemCategory'
-							}).map((item) => <MenuCard key={item?.dish?.id} item={item} />)
+							}).map((item , index) => index < 5 ? ( 
+								<div className='flex flex-col relative'>
+										<div className={`cursor-pointer px-3 py-1.5 text-center border border-white rounded-full  ${activeTab == index ? 'bg-gray-100' : 'bg-white'}`} onClick={() => setActiveTab(index)}>{item?.card?.card?.title} ({item?.card?.card?.itemCards?.length}) </div>
+								</div>) : null
+							)
+						}
+					</div>
+					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
+						{
+							menu.filter((item)=> {
+								return item?.card?.card?.['@type'] === 'type.googleapis.com/swiggy.presentation.food.v2.ItemCategory'
+							}).map((menuItem, index) => (
+								index < 8 && activeTab == index ? (
+									<MenuContainer key={index} menuItem={menuItem} />
+								): null
+							))
 						}
 					</div>
 				</div>

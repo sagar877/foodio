@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { base_url } from './Constants';
-import { useGetCookie } from '../utils/useGetCookie';
+import { getCookie } from '../utils/getCookie';
 
 // Create context
 const AuthContext = createContext();
 
-// Provider component
+// Provider componen
 export const AuthProvider = ({ children }) => {
-    const csrf = useGetCookie();
+    
     const [isAuthenticated, setIsAuthenticated] = useState();
 
     useEffect(()=>{
@@ -17,13 +17,10 @@ export const AuthProvider = ({ children }) => {
 
     const checkAuth = async () =>{
 
-        await fetch(base_url + "/sanctum/csrf-cookie", {
-                credentials: "include"
-        });
-
         const response = await fetch(base_url + '/api/check-authenticated',{
             credentials:'include',
         });
+
         if(response.ok){
             const data = await response.json();
             setIsAuthenticated(data.authenticated);
@@ -31,6 +28,13 @@ export const AuthProvider = ({ children }) => {
     }
 
     const register = async ({...data}) => {
+
+        await fetch(base_url + "/sanctum/csrf-cookie", {
+                credentials: "include"
+        });
+
+        const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'));
+
         const response = await fetch(base_url + '/api/register', {
             method: 'POST',
             headers: {
@@ -53,6 +57,13 @@ export const AuthProvider = ({ children }) => {
     
 
     const login = async ({...data}) => {
+
+        await fetch(base_url + "/sanctum/csrf-cookie", {
+            credentials: "include"
+        });
+
+        const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'));
+
         const response = await fetch(base_url +'/api/login', {
             method: 'POST',
             headers: {
@@ -69,7 +80,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-    
+        const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'));
+
         const response = await fetch(base_url+'/api/logout', {
             method: 'POST',
             headers: {

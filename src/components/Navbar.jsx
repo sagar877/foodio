@@ -7,16 +7,12 @@ import { useAuth } from './AuthContext'
 import { base_url } from './Constants';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useGetCookie } from "../utils/useGetCookie";
+import { getCookie } from "../utils/getCookie";
 
-function Navbar() {
-
-	const csrf = useGetCookie()
-
+const Navbar = () => {
 	const { logout , isAuthenticated } = useAuth();
 	
 	const dispatch = useDispatch()
-	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 
 	const location = useLocation();
   	const isHome = location.pathname === '/';

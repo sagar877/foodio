@@ -4,6 +4,7 @@ import { useCallback} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router'
 import { faCircleChevronLeft , faCircleChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { img_url } from './Constants'
 
 const DishCarousel = ({dishes}) => {
 
@@ -31,7 +32,7 @@ const DishCarousel = ({dishes}) => {
                 <div className='embla__container flex'>
                     {dishes?.map((dish)=>
                         <div key={dish?.id} onClick={() =>getRestaurantDetails(dish.action.link)} className='embla__slide min-w-0 cursor-pointer' style={{flex:"0 0 15%"}}>
-                            <img src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_600,c_fill/"+dish.imageId} alt="dish"/>
+                            <img src={img_url + dish.imageId} alt="dish"/>
                         </div>
                     )}
                 </div>

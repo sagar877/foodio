@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
-import { useGetCookie } from '../utils/useGetCookie'
+import { getCookie} from '../utils/getCookie'
 
 const Register = () => {
 
@@ -14,7 +14,6 @@ const Register = () => {
 		email: '',
 		password: ''
 	});
-	const csrf = useGetCookie();
 
 	const [errors, setErrors] = useState({});
 

@@ -4,8 +4,9 @@ import { useDispatch} from 'react-redux'
 import { useState , useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { toggleLogin , toggleRegister } from '../utils/AppSlice'
+import { getCookie } from '../utils/getCookie'
 import { base_url } from './Constants'
-import { useGetCookie } from '../utils/useGetCookie'
+
 
 const Login = () => {
 
@@ -14,7 +15,6 @@ const Login = () => {
 		password: ''
 	})
 	const { login , isAuthenticated } = useAuth();
-	const csrf = useGetCookie();
 
 	const [errors, setErrors] = useState({});
 	const dispatch = useDispatch()
@@ -36,37 +36,37 @@ const Login = () => {
 
 		try
 		{
-			 await login({ ...loginForm });
-		
-			// if (response.ok) {		
-			// 	const data = await response.json();
-				const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
+			await login({ ...loginForm });
+	
+			const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
 
-				if(cartData.length === 0) {
-					return;
-				}
+			if(cartData.length === 0) {
+				return;
+			}
 
-				// const rest = await fetch(base_url + '/api/sync-cart', {
-				// 	method: 'POST',
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 		'Accept': 'application/json',
-				// 		'X-XSRF-TOKEN': csrf
-				// 	},
-				// 	credentials: 'include',
-				// 	body: JSON.stringify({cart : cartData})
-				// });
-				
-				// localStorage.removeItem('cartItems');
-				// dispatch(toggleLogin(false))
-			// }
-			// else {
-			// 	console.error('Login failed with status:', response.status);
-			// }
+			const csrf = decodeURIComponent(getCookie('XSRF_TOKEN'))
+
+			const rest = await fetch(base_url + '/api/sync-cart', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'X-XSRF-TOKEN': csrf
+				},
+				credentials: 'include',
+				body: JSON.stringify({cart : cartData})
+			});
+			
+			localStorage.removeItem('cartItems');
+			dispatch(toggleLogin(false))
 		}
 		catch (error) {
 			console.error('Error during login:', error);
 		}
+	}
+
+	const handleCloseLogin = () =>{
+		dispatch(toggleLogin(false))
 	}
 
 	const handleLogin = () => {

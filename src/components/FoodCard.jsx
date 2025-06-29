@@ -2,10 +2,10 @@
 import { useNavigate } from 'react-router'
 import { FontAwesomeIcon}  from '@fortawesome/react-fontawesome'
 import { faStar} from '@fortawesome/free-solid-svg-icons'
+import { img_url } from './Constants'
 
-function FoodCard({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) {
+const FoodCard = ({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) => {
 
-    const {lastMileTravelString}=sla
   	const Navigate=useNavigate()
 	const details=()=>{
 		Navigate("/restaurant/"+id)
@@ -14,7 +14,7 @@ function FoodCard({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) {
     return (
 		<div onClick={()=>details()} className="w-fit h-auto cursor-pointer flex-col my-2 bg-white transition-all duration-300 ease-in-out transform hover:scale-95">
 			<img className="rounded-xl" src={
-				"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+
+				img_url+
 				cloudinaryImageId } 
 				alt="dish"/>
 			<div className='px-4 py-2'>

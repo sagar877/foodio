@@ -18,12 +18,13 @@ function filterData(text,allrestorant){
 }
 
 
-function Home() {
+const Home = () => {
 
 	const[text,setText]=useState("")
 	const[allrestorant,setAllRestorant]=useState([])
 	const[dishes,setDishes]=useState([])
 	const[filterrestorant,setFilterRestorant]=useState([])
+
 	const isOnline=useOnline()
 	const sectionRef = useRef(null);
 	const isLoggedInModal = useSelector( store=>store.app.isLoggedInModal)
@@ -84,20 +85,6 @@ function Home() {
 							</div>
 						</div>
 					</div>
-					
-					 {/* <AnimatePresence mode="wait">
-						<motion.div
-							initial={{ y: 70, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							exit={{ y: -70, opacity: 0 }}
-							transition={{ duration: 0.8 }}
-						>
-							<div className='relative flex flex-col justify-center'>
-								<img src={main} alt='food' className='relative z-10 max-w-[400px] max-h-[400px] my-auto'/>
-								<img src={leafImage1} alt='food' className='absolute max-lg:hidden w-[280px] -right-32 -top-10' />
-							</div>
-						</motion.div>
-                	</AnimatePresence> */}
 				</div>	
 			</div>
 			
