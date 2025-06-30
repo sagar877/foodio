@@ -57,37 +57,36 @@ const Home = () => {
 		<>
 			{ isLoggedInModal && <Login/>}
 			{ isRegisteredModal && <Register/>}
-			<div className='bg-gradient-to-t from-black/70 to-white/5 h-screen px-20 max-lg:px-10 flex flex-col' >
-				<video  className="absolute -z-10 inset-0 object-cover" autoPlay muted loop  playsInline id="myVideo">
-					<source src={background} type="video/mp4" />
-						Your browser does not support the video tag.
-				</video>	
-				<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-full justify-center'>
-					<div>
-						<div  className="w-[50%] max-lg:w-[80%] max-md:w-full mx-auto">
-							<div className='text-6xl max-xl:text-4xl max-2xl:text-5xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
-							<div className='my-4 max-lg:my-3 text-center text-xl max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
-							<div className='flex border rounded-full h-11 w-[85%] max-md:w-full mx-auto bg-white'>
-								<input 
-									type='text' 
-									  className='border-none mx-2 font-[poppins] w-full rounded-full p-2 focus:bg-white focus:outline-none placeholder:text-sm' 
-									value={text} 
-									placeholder='Search for restaurant'
-									onChange={(e)=>setText(e.target.value)} 
-								/>
-								<button onClick={() => {
-									const data=filterData(text,allrestorant);
-									setFilterRestorant(data);
-									scrollToSection();
-									setText('')}} 
-									  className='w-[200px] tracking-wide text-sm bg-green-700 font-[poppins] p-1 rounded-full text-white'>
-									<FontAwesomeIcon className='me-1' icon={faMagnifyingGlass}/>Search</button>
-							</div>
+			<div className='absolute inset-0 bg-gradient-to-t from-black/70 to-white/5 h-screen px-20 max-lg:px-10 flex flex-col' ></div>
+			<video  className="absolute -z-10 inset-0 object-cover h-screen w-full" autoPlay muted loop  playsInline id="myVideo">
+				<source src={background} type="video/mp4" />
+					Your browser does not support the video tag.
+			</video>	
+			<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-screen relative justify-center'>
+				<div>
+					<div  className="w-[50%] max-lg:w-[80%] max-md:w-full mx-auto">
+						<div className='text-6xl max-xl:text-4xl max-2xl:text-5xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
+						<div className='my-4 max-lg:my-3 text-center text-xl max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
+						<div className='flex border rounded-full h-11 w-[85%] max-md:w-full mx-auto bg-white'>
+							<input 
+								type='text' 
+									className='border-none mx-2 font-[poppins] w-full rounded-full p-2 focus:bg-white focus:outline-none placeholder:text-sm' 
+								value={text} 
+								placeholder='Search for restaurant'
+								onChange={(e)=>setText(e.target.value)} 
+							/>
+							<button onClick={() => {
+								const data=filterData(text,allrestorant);
+								setFilterRestorant(data);
+								scrollToSection();
+								setText('')}} 
+									className='w-[200px] tracking-wide text-sm bg-green-700 font-[poppins] p-1 rounded-full text-white'>
+								<FontAwesomeIcon className='me-1' icon={faMagnifyingGlass}/>Search</button>
 						</div>
 					</div>
-				</div>	
-			</div>
-			
+				</div>
+			</div>	
+		
 			<DishCarousel dishes={dishes}/>
 			
 			<div ref={sectionRef} className='flex flex-col py-8 mt-4 px-5'>  
