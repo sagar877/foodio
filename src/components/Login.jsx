@@ -2,25 +2,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch} from 'react-redux'
 import { useState , useEffect } from 'react'
-import { useAuth } from './AuthContext'
-import { toggleLogin , toggleRegister } from '../utils/AppSlice'
+import { setLogIn, toggleLogin , toggleRegister } from '../utils/AppSlice'
 import { getCookie } from '../utils/getCookie'
 import { base_url } from './Constants'
 
 
 const Login = () => {
 
-	const [loginForm, setLoginForm] = useState({
+	const [loginForm, setLogInForm] = useState({
 		email: '',
 		password: ''
 	})
-	const { login , isAuthenticated } = useAuth();
 
 	const [errors, setErrors] = useState({});
 	const dispatch = useDispatch()
 
 	const handleChange = (e) =>{
-		setLoginForm({ ...loginForm ,[ e.target.name ] : e.target.value })
+		setLogInForm({ ...loginForm ,[ e.target.name ] : e.target.value })
 	}
 
 	const handleSubmit = async(e) => {
@@ -36,29 +34,47 @@ const Login = () => {
 
 		try
 		{
-			await login({ ...loginForm });
-	
-			const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
+			await fetch(base_url + "/sanctum/csrf-cookie", {
+            	credentials: "include"
+        	});
 
-			if(cartData.length === 0) {
-				return;
-			}
+        	const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'));
 
-			const csrf = decodeURIComponent(getCookie('XSRF_TOKEN'))
-
-			const rest = await fetch(base_url + '/api/sync-cart', {
+			const response = await fetch(base_url +'/api/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
 					'X-XSRF-TOKEN': csrf
 				},
-				credentials: 'include',
-				body: JSON.stringify({cart : cartData})
+				credentials: 'include', 
+				body: JSON.stringify(loginForm)
 			});
-			
-			localStorage.removeItem('cartItems');
-			dispatch(toggleLogin(false))
+
+			if(response.ok){
+				localStorage.setItem('login' , 'true')
+				dispatch(setLogIn(true))
+
+				const cartData = JSON.parse(localStorage.getItem('cartItems') ?? '[]');
+
+				if(cartData.length === 0) {
+					return;
+				}
+
+				const rest = await fetch(base_url + '/api/sync-cart', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+						'X-XSRF-TOKEN': csrf
+					},
+					credentials: 'include',
+					body: JSON.stringify({cart : cartData})
+				});
+				
+				localStorage.removeItem('cartItems');
+				dispatch(toggleLogin(false))
+			}
 		}
 		catch (error) {
 			console.error('Error during login:', error);

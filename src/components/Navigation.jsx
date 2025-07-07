@@ -15,10 +15,10 @@ export const Navigation = () =>{
 				    element={<Home/>}/>
 				<Route 
 					path="/restaurant/:id"
-					element={< FoodDetails/>}/>
+					element={<FoodDetails/>}/>
 				<Route 
 					path="/dish/:collectionId"
-					element={< RestaurantListByDish/>}/>
+					element={<RestaurantListByDish/>}/>
 				<Route 
 					path="/Cart"
 					element={<Cart/>}/>

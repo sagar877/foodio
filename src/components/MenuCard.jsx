@@ -5,16 +5,14 @@ import { getCookie } from '../utils/getCookie';
 import { img_url } from './Constants'
 import img from '../Images/no-dish.jpg'
 import { useSelector , useDispatch } from 'react-redux'
-import { useAuth } from './AuthContext'
 
 const MenuCard = ({item}) => {
-
-    const { isAuthenticated } = useAuth();
 
 	const dispatch = useDispatch()
 	const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'))
 
 	const cart = useSelector(store => store.cart.items)
+	const isAuthenticated = useSelector(store => store.app.isLoggedIn)
 	
 	const handleAddItem = (item) =>{
 		dispatch(addItem(item))

@@ -1,6 +1,6 @@
 
 import FoodCard from './FoodCard';
-import { useEffect, useState, useRef, createContext} from 'react';
+import { useEffect, useState, useRef} from 'react';
 import { useOnline } from '../utils/useOnline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DishCarousel from './DishCarousel';

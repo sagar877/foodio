@@ -2,29 +2,55 @@ import { Link } from "react-router-dom"
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { toggleLogin } from '../utils/AppSlice';
-import { useAuth } from './AuthContext'
+import { setLogIn, toggleLogin } from '../utils/AppSlice';
 import { base_url } from './Constants';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getCookie } from "../utils/getCookie";
 
 const Navbar = () => {
-	const { logout , isAuthenticated } = useAuth();
-	
+
 	const dispatch = useDispatch()
 
 	const location = useLocation();
   	const isHome = location.pathname === '/';
+
+	const isAuthenticated = useSelector(store => store.app.isLoggedIn)
 
 	const handleLogin = () => {
 		dispatch(toggleLogin(true))
 	}
 
 	const handleLogout = async () => {
+
 		try {	
-			await logout();
-		} catch (error) {
+
+			await fetch(base_url + "/sanctum/csrf-cookie", {
+            	credentials: "include"
+        	});
+
+			const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'));
+
+			const response = await fetch(base_url+'/api/logout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'X-XSRF-TOKEN': csrf
+				},
+				credentials: 'include'
+			});
+
+			if (response.ok) {	
+				const data = await response.json();
+				localStorage.setItem('login' , 'false')
+				dispatch(setLogIn(false))
+			}
+			else {
+				console.error('Logout failed with status:', response.status);
+			}
+		} 
+		catch (error) {
 			console.error('Error during logout:', error);
 		}
 	}
@@ -33,7 +59,7 @@ const Navbar = () => {
 
   	return (
 		<>
-			<div className={`bg-lime-600 bg-opacity-5 flex items-center h-16  justify-between px-10`}>  
+			<div className={`relative z-20 bg-lime-600 bg-opacity-5 flex items-center h-16  justify-between px-10`}>  
 				<a href="/" className={`${ isHome? 'text-white' : 'text-black'} font-[merienda] text-2xl font-semibold`}>Foodio</a>
 				<div className='flex items-center gap-3'>
 					{ isAuthenticated ?

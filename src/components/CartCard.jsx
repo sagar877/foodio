@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { base_url, img_url } from './Constants';
 import { getCookie } from '../utils/getCookie';
-import { useAuth } from "./AuthContext";
 import Login from './Login'
 import { toggleLogin } from "../utils/AppSlice";
 
@@ -15,11 +14,11 @@ const CartCard = (item) => {
 	const dispatch=useDispatch()
 
 	const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'))
-	const { isAuthenticated } = useAuth();
 
 	const quantity = useSelector(store => store.cart.cartItemsQuantity[item.id]?. quantity) ||1
 	const price = useSelector(store => store.cart.cartItemsQuantity[item.id]?. price) || item.price
 	const isLoggedInModal = useSelector( store=>store.app.isLoggedInModal)
+	const isAuthenticated = useSelector(store => store.app.isLoggedIn)
 
 	const handleLogin = () => {
 		dispatch(toggleLogin(true))

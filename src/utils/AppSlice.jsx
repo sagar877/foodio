@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import React from 'react'
 
 const AppSlice = createSlice({
     name:'app',
     initialState:{
         isLoggedInModal:false,
         isRegisteredModal:false,
+        isLoggedIn : localStorage.getItem('login') === 'true'
     },
     reducers:{
         toggleLogin:(state,action)=>{
@@ -14,8 +14,11 @@ const AppSlice = createSlice({
         toggleRegister:(state,action)=>{
             state.isRegisteredModal = action.payload
         },
+        setLogIn : (state , action) =>{
+            state.isLoggedIn = action.payload
+        }
     }
 })
 
-export const { toggleLogin , toggleRegister, setLogin} = AppSlice.actions
+export const { toggleLogin , toggleRegister, setLogIn } = AppSlice.actions
 export default AppSlice.reducer

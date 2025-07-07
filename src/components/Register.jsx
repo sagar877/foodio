@@ -1,9 +1,7 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { toggleRegister } from '../utils/AppSlice'
+import { setLogIn, toggleRegister } from '../utils/AppSlice'
 import { base_url } from './Constants'
 import { getCookie} from '../utils/getCookie'
 
@@ -14,6 +12,7 @@ const Register = () => {
 		email: '',
 		password: ''
 	});
+	const dispatch = useDispatch()
 
 	const [errors, setErrors] = useState({});
 
@@ -34,10 +33,34 @@ const Register = () => {
 			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
 		}
 
+		await fetch(base_url + "/sanctum/csrf-cookie", {
+			credentials: "include"
+		});
+		
+		const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'));
+	
+		const response = await fetch(base_url + '/api/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'X-XSRF-TOKEN': csrf
+			},
+			credentials: 'include',
+			body: JSON.stringify(registerForm)
+		});
+
+		if(response.ok){
+			const data = await response.json();
+			localStorage.setItem('login' , 'true')
+			dispatch(setLogIn(true))
+		}
+		else {
+			const errorData = await response.json();
+			console.error('Registration failed:', errorData);
+		}
 	}
 	
-    const dispatch = useDispatch()
-
 	const handleRegister = () => {
 		dispatch(toggleRegister(false))
 	}
