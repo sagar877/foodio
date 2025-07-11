@@ -1,5 +1,5 @@
 
-import FoodCard from './FoodCard';
+import { VegFoodCard, FoodCard } from './FoodCard';
 import { useEffect, useState, useRef} from 'react';
 import { useOnline } from '../utils/useOnline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,6 +24,8 @@ const Home = () => {
 	const[allrestorant,setAllRestorant]=useState([])
 	const[dishes,setDishes]=useState([])
 	const[filterrestorant,setFilterRestorant]=useState([])
+
+	const RestaurantCard = VegFoodCard(FoodCard);
 
 	const isOnline=useOnline()
 	const sectionRef = useRef(null);
@@ -94,7 +96,7 @@ const Home = () => {
 					<>
 						<div className="text-3xl font-bold">Discover Best Restaurants</div> 
 						<div className='mt-4 grid gap-x-5 gap-y-2 grid-cols-1 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'>
-							{filterrestorant.map((restaurant)=> <FoodCard  {...restaurant.info} key={restaurant.info.id} />)}
+							{filterrestorant.map((restaurant)=> <RestaurantCard  {...restaurant.info} key={restaurant.info.id} />)}
 						</div>
 					</>:
 					<>

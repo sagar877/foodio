@@ -4,7 +4,7 @@ import { FontAwesomeIcon}  from '@fortawesome/react-fontawesome'
 import { faStar} from '@fortawesome/free-solid-svg-icons'
 import { img_url } from './Constants'
 
-const FoodCard = ({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) => {
+export const FoodCard = ({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) => {
 
   	const Navigate=useNavigate()
 	const details=()=>{
@@ -12,7 +12,7 @@ const FoodCard = ({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) =
 	}
 
     return (
-		<div onClick={()=>details()} className="w-fit h-auto cursor-pointer flex-col my-2 bg-white transition-all duration-300 ease-in-out transform hover:scale-95">
+		<div onClick={()=>details()} className="w-fit h-auto cursor-pointer flex-col my-2 bg-white transition-all duration-300 ease-in-out transform group-hover:scale-95">
 			<img className="rounded-xl" src={
 				img_url+
 				cloudinaryImageId } 
@@ -31,12 +31,15 @@ const FoodCard = ({name,cloudinaryImageId,cuisines,sla,id,avgRating,areaName}) =
     )
   }
 
-
-    
-  
-  
-  
-
-  
-
-export default FoodCard
+export const VegFoodCard = (FoodCard) => {
+	return ({veg, ...props})=>{
+		return (
+		<>
+			<div className='relative group'>
+				{veg && <span className='block px-5 py-1 absolute top-5 z-10 left-0 border rounded-tr-lg rounded-br-lg  border-transparent shadow-2xl bg-green-700 text-white text-sm transition-all duration-300 ease-in-out transform group-hover:scale-75'>Veg</span>}
+				<FoodCard {...props} />
+			</div>
+		</>
+		)
+	}
+}

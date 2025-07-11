@@ -36,15 +36,15 @@ const FoodDetails = () => {
 		{isLoggedInModal && <Login/>}
 			<div className='flex flex-col py-5'>
 				<RestaurantInfo data={data}/>
-				<div className='px-10 my-5'>
+				<div className='px-10 my-5 max-md:px-5'>
 					<h1 className='font-bold my-4 text-lg'>Menu</h1>
-					<div className='flex gap-x-3'>
+					<div className='flex gap-x-3 max-sm:gap-x-2'>
 						{
 							menu.filter((item)=> {
 								return item?.card?.card?.['@type'] === 'type.googleapis.com/swiggy.presentation.food.v2.ItemCategory'
 							}).map((item , index) => index < 5 ? ( 
 								<div className='flex flex-col relative'>
-										<div className={`cursor-pointer px-3 py-1.5 text-center border border-white rounded-full  ${activeTab == index ? 'bg-gray-100' : 'bg-white'}`} onClick={() => setActiveTab(index)}>{item?.card?.card?.title} ({item?.card?.card?.itemCards?.length}) </div>
+										<div className={`cursor-pointer px-3 py-1.5 text-center border border-white rounded-full max-sm:text-sm ${activeTab == index ? 'bg-gray-100' : 'bg-white'}`} onClick={() => setActiveTab(index)}>{item?.card?.card?.title} ({item?.card?.card?.itemCards?.length}) </div>
 								</div>) : null
 							)
 						}

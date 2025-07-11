@@ -1,6 +1,6 @@
 import { useState , useEffect} from 'react'
 import { useParams } from 'react-router';
-import FoodCard from './FoodCard';
+import { VegFoodCard, FoodCard } from './FoodCard';
 
 const RestaurantListByDish = () => {
 
@@ -8,6 +8,8 @@ const RestaurantListByDish = () => {
    	const [data,setData]=useState([]);
 	const [dishTitle,setDishTitle]=useState("")
 	const [dishDescription,setDishDescription]=useState("") 
+
+	const RestaurantCard = VegFoodCard(FoodCard);
 
     useEffect(()=>{
         getDetails()
@@ -29,7 +31,7 @@ const RestaurantListByDish = () => {
 			<div className='px-5 py-5 pt-0 grid grid-cols-4 gap-x-5 gap-y-2 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 2xl:grid-cols-5'>	
 				{
 					data.slice(2).map((item) => 
-						<FoodCard {...item?.card?.card?.info} key={item?.card?.card?.info?.id}  />	
+						<RestaurantCard {...item?.card?.card?.info} key={item?.card?.card?.info?.id}  />	
 					)
 				}
 			</div>
