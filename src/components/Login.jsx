@@ -5,6 +5,7 @@ import { useState , useEffect } from 'react'
 import { setLogIn, toggleLogin , toggleRegister } from '../utils/AppSlice'
 import { getCookie } from '../utils/getCookie'
 import { base_url } from './Constants'
+import ReactDOM from 'react-dom'
 
 
 const Login = () => {
@@ -81,10 +82,6 @@ const Login = () => {
 		}
 	}
 
-	const handleCloseLogin = () =>{
-		dispatch(toggleLogin(false))
-	}
-
 	const handleLogin = () => {
 		dispatch(toggleLogin(false))
 	}
@@ -93,9 +90,9 @@ const Login = () => {
 		dispatch(toggleRegister(true))
 	}
 
-  return (
-    <> 
-     	<div className="fixed z-20 bg-black bg-opacity-40 inset-0 overflow-y-auto">
+	return ReactDOM.createPortal(
+    	<> 
+     		<div className="fixed z-20 bg-black bg-opacity-40 inset-0 overflow-y-auto">
 			<div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 backdrop-filter backdrop-blur-sm">
 				<div className="fixed inset-0 transition-opacity" aria-hidden="true"onClick={() => handleLogin(false)}>
 					<div className="absolute inset-0 opacity-25 bg-gray-800 bg-opacity-50" /></div>
@@ -123,7 +120,8 @@ const Login = () => {
 					</div>
 				</div>
     		</div>
-    	</>
+    	</>,
+		document.getElementById('root')
   	)
 }
 
