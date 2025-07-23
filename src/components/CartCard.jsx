@@ -40,6 +40,8 @@ const CartCard = (item) => {
 			body: JSON.stringify({amount : price/100})
 		});
 
+		if (!response.ok) throw new Error("Failed to create Razorpay order");
+
 		if(response.ok){
 			const data = await response.json();
 			const options = {
@@ -48,9 +50,36 @@ const CartCard = (item) => {
 				currency: "INR",
 				name: "Test Company",
 				description: "Test Transaction",
-				order_id: data.order_id,
-				handler: function (response) {
-					alert("Payment successful! Razorpay Payment ID: " + response.razorpay_payment_id);
+				order_id: data.order.id,
+				handler: async function (paymentResponse) {
+					// You can now verify this via your backend
+					console.log("Payment success:", paymentResponse);
+
+					const verifyResponse = await fetch(`${base_url}/api/verify-payment`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+							'X-XSRF-TOKEN': csrf
+						},
+						credentials: 'include',
+						body: JSON.stringify({
+							paymentResponse: {
+								razorpay_order_id: paymentResponse.razorpay_order_id,
+								razorpay_payment_id: paymentResponse.razorpay_payment_id,
+								razorpay_signature: paymentResponse.razorpay_signature
+							}
+						})
+					});
+			
+					const result = await verifyResponse.json();
+					console.log("✅ Verification result:", result);
+					if (result.success) {
+						alert("Payment verified and successful!");
+					} else {
+						alert("Payment verification failed!");
+					}
+	
 				},
 				prefill: {
 					name: "John Doe",
