@@ -6,6 +6,9 @@ export default defineConfig({
     base: './', 
     plugins: [react()],
     server:{
-        allowedHosts:['https://4d8c83b44616.ngrok-free.app/']
+        allowedHosts:['https://6a60123d54e1.ngrok-free.app/']
+    },
+    optimizeDeps: {
+        exclude: ['react-hook-form'],
     }
 })

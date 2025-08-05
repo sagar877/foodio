@@ -49,7 +49,7 @@ const MenuCard = ({item}) => {
 		<div className='flex flex-col p-4 py-2'>
 			<h2 className='font-bold text-base mt-1 line-clamp-1'>{item?.card?.info?.name}</h2>
 			<p className='text-sm line-clamp-3 h-16 my-1.5 text-neutral-700'>{item?.card?.info?.description ? item?.card?.info?.description : 'No description available' }</p>
-			<p className='font-bold'>₹ {item?.card?.info?.price/100}</p>
+			<p className='font-bold'>₹ {item?.card?.info?.price ? item?.card?.info?.price/100 : item?.card?.info?.defaultPrice/100}</p>
 			{	
 				isInCart ?
 				<button type="button" className="border shadow-md font-semibold rounded-lg bg-white w-[70%] mx-auto -mb-6 text-green-600 p-2 mt-2 hover:bg-green-50 text-green-600 font-semibold text-sm mt-1">Added</button>

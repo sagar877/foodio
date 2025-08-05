@@ -4,37 +4,23 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { setLogIn, toggleRegister } from '../utils/AppSlice'
+import { useForm } from "react-hook-form"
 import { base_url } from './Constants'
 import { getCookie} from '../utils/getCookie'
 
 const Register = () => {
 
-	const [registerForm, setRegisterForm] = useState({
-		name: '',
-		email: '',
-		password: ''
-	});
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors },
+	  } = useForm()
+
 	const dispatch = useDispatch()
 
-	const [errors, setErrors] = useState({});
-
-	const handleChange = (e) =>{
-		setRegisterForm({...registerForm , [e.target.name] : e.target.value})
-	}
-
-	const handleSubmit =  async(e) => {
-		e.preventDefault();
-
-		if(!registerForm.name){
-			setErrors( prevErrors =>({...prevErrors, name: 'Name is required' }));
-		}
-		if(!registerForm.email){
-			setErrors( prevErrors => ({ ...prevErrors, email: 'Email is required' }));
-		}
-		if(!registerForm.password){
-			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
-		}
-
+	const onSubmit =  async(data) => {
+	
 		await fetch(base_url + "/sanctum/csrf-cookie", {
 			credentials: "include"
 		});
@@ -49,7 +35,7 @@ const Register = () => {
 				'X-XSRF-TOKEN': csrf
 			},
 			credentials: 'include',
-			body: JSON.stringify(registerForm)
+			body: JSON.stringify(data)
 		});
 
 		if(response.ok){
@@ -84,18 +70,32 @@ const Register = () => {
 							</h3>
 							<FontAwesomeIcon className="cursor-pointer h-5 hover:text-gray-600" icon={faTimes} onClick={() => handleRegister()}/>
 						</div>
-						<form className="flex flex-col mt-5" onSubmit={handleSubmit}>
+						<form className="flex flex-col mt-5"onSubmit={handleSubmit(onSubmit)}>
 							<label>Name</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="name" onChange={handleChange} value={registerForm.name} type="text" placeholder='Enter your name'/>
-							{errors.name && <p className="text-red-500 text-xs mt-1 ps-1">{errors.name}</p>}
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="text" { ...register ("name" , { required : 'The name field is required'}) } placeholder='Enter your name'/>
+							{errors.name && <p className="text-red-500 text-xs mt-1 ps-1">{errors.name.message}</p>}
 
                             <label className='mt-5'>Email</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="email" onChange={handleChange} value={registerForm.email} type="email" placeholder='Enter your email'/>
-							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email}</p>}
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="email"  { ...register ("email" , { required : 'The email field is required'} )} placeholder='Enter your email'/>
+							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email.message}</p>}
 
 							<label className='mt-5'>Password</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' name="password" onChange={handleChange} value={registerForm.password} type="password" placeholder='*********'/>
-							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password}</p>}
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="password" {...register("password", {
+								required: "Password is required",
+								minLength: {
+									value: 8,
+									message: "Password must be at least 8 characters long"
+								},
+								pattern: {
+									value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/,
+									message: "Password must include uppercase, lowercase, number, and symbol"
+								}
+							})} placeholder='*********'/>
+							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password.message}</p>}
+
+							<label className='mt-5'>Confirm Password</label>
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' type="password"  {...register("confirmPassword", {required: "Please confirm your password", validate: value => value === password || "Passwords do not match"})} placeholder='*********'/>
+							{errors.confirmPassword && <p className="text-red-500 text-xs mt-1 ps-1">{errors.confirmPassword.message}</p>}
 
 							<button className='w-full bg-green-600 rounded-md text-white p-1.5 mt-8'>Sign up</button>
 						</form>

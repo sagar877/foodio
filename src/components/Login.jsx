@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch} from 'react-redux'
 import { useState , useEffect } from 'react'
+import { useForm } from "react-hook-form"
 import { setLogIn, toggleLogin , toggleRegister } from '../utils/AppSlice'
 import { getCookie } from '../utils/getCookie'
 import { base_url } from './Constants'
@@ -10,28 +11,20 @@ import ReactDOM from 'react-dom'
 
 const Login = () => {
 
-	const [loginForm, setLogInForm] = useState({
-		email: '',
-		password: ''
-	})
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors },
+	  } = useForm()
 
-	const [errors, setErrors] = useState({});
 	const dispatch = useDispatch()
 
 	const handleChange = (e) =>{
 		setLogInForm({ ...loginForm ,[ e.target.name ] : e.target.value })
 	}
 
-	const handleSubmit = async(e) => {
-		e.preventDefault();
-
-		if(!loginForm.email){
-			setErrors(prevErrors => ({ ...prevErrors, email: 'Email is required' }));
-		}
-
-		if(!loginForm.password){
-			setErrors(prevErrors => ({ ...prevErrors, password: 'Password is required' }));
-		}
+	const onSubmit = async(data) => {
 
 		try
 		{
@@ -107,13 +100,13 @@ const Login = () => {
 							</h3>
 							<FontAwesomeIcon className="cursor-pointer h-5 hover:text-gray-600" icon={faTimes} onClick={() => handleLogin(false)}/>
 						</div>
-						<form className="flex flex-col mt-5" onSubmit={handleSubmit}>
+						<form className="flex flex-col mt-5" onSubmit={handleSubmit(onSubmit)}>
 							<label>Email</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' onChange={handleChange} value={loginForm.email} name="email" type="email" placeholder='Enter your email'/>
-							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email}</p>}
+							<input className='border rounded-md p-2 mt-2 focus:outline-none' {...register('email' , { required : 'The email field is required'})} type="email" placeholder='Enter your email'/>
+							{errors.email && <p className="text-red-500 text-xs mt-1 ps-1">{errors.email.message}</p>}
 							<label className='mt-5'>Password</label>
-							<input className='border rounded-md p-2 mt-2 focus:outline-none' onChange={handleChange} value={loginForm.password} name="password" type="password" placeholder='*********'/>
-							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password}</p>}
+							<input className='border rounded-md p-2 mt-2 focus:outline-none'  {...register('password' , { required : 'The password field is required'})} type="password" placeholder='*********'/>
+							{errors.password && <p className="text-red-500 text-xs mt-1 ps-1">{errors.password.message}</p>}
 							<button className='w-full bg-green-600 rounded-md text-white p-1.5 mt-8'>login</button>
 						</form>
 						<div className='mt-5'>New to Foodio ? <button onClick={() =>{ handleLogin() ; handleRegister()}} className="text-green-600 underline" href="">Create Account</button></div>
