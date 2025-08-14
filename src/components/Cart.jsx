@@ -8,6 +8,7 @@ import Register from './Register';
 export const Cart=()=>{
 
     const userSelect=useSelector(Store=>Store.cart.items)
+	console.log(userSelect)
 	const isLoggedInModal = useSelector(store => store.app.isLoggedInModal)
 	const isRegisteredModal = useSelector(store => store.app.isRegisteredModal)
    
@@ -27,7 +28,7 @@ export const Cart=()=>{
 					<h1 className="font-bold text-3xl">CartItems</h1>
 					<button className="p-1.5 mt-1 bg-red-700 border w-[150px] rounded-lg text-white" onClick={()=>handleClear()}>Clear cart</button>
 				</div>
-				<div className="grid grid-cols-2 max-lg:grid-cols-1 2xl:grid-cols-3 gap-5 gap-y-2 px-10 my-3">
+				<div className="grid grid-cols-2 max-lg:grid-cols-1 2xl:grid-cols-3 gap-5 gap-y-2 md:px-10 px-5 my-3">
 					{ userSelect.map((items)=> <CartDetails {...items} /> )}
 				</div>
 			</div>

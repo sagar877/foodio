@@ -5,7 +5,7 @@ import { img_url } from './Constants'
 
 const RestaurantInfo = ({data}) => {
   return (
-    <div className='px-10'>
+    <div className='md:px-10 px-5'>
         <h1 className='font-bold text-2xl mb-4'>{data.name}</h1>
         <div className='relative h-56 w-full border rounded-xl overflow-hidden'>
             <div className='absolute left-10 top-6 h-44 w-96 p-5 border rounded-lg bg-white border-transparent z-10'>

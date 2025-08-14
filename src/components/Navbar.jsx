@@ -60,7 +60,7 @@ const Navbar = () => {
   	return (
 		<>
 			<div className={`relative z-20 bg-lime-600 bg-opacity-5 flex items-center h-16  justify-between px-10`}>  
-				<a href="/" className={`${ isHome? 'text-white' : 'text-black'} font-[merienda] text-2xl font-semibold`}>Foodio</a>
+				<Link to="/" className={`${ isHome? 'text-white' : 'text-black'} font-[merienda] text-2xl font-semibold`}>Foodio</Link>
 				<div className='flex items-center gap-3'>
 					{ isAuthenticated ?
 						<button onClick={() => handleLogout()} className={`${ isHome? 'bg-transparent px-3' : 'bg-red-600 text-sm px-4'} h-8 text-white font-medium rounded-xl`}>Logout</button> 

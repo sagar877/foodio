@@ -20,7 +20,7 @@ export const Navigation = () =>{
 					path="/dish/:collectionId"
 					element={<RestaurantListByDish/>}/>
 				<Route 
-					path="/Cart"
+					path="/cart"
 					element={<Cart/>}/>
 				<Route 
 					path='*'

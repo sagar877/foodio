@@ -50,4 +50,4 @@ const DishCarousel = ({dishes}) => {
   )
 }
 
-export default DishCarousel
+export default React.memo(DishCarousel)

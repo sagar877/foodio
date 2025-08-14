@@ -1,14 +1,17 @@
 
 import { VegFoodCard, FoodCard } from './FoodCard';
-import { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import { useOnline } from '../utils/useOnline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import DishCarousel from './DishCarousel';
 import { useSelector } from 'react-redux';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import background from '../Images/background.mp4'
-import Login from './Login';
-import Register from './Register';
+import { useMemo } from 'react';
+import { Suspense } from 'react';
+
+const Login = React.lazy(() => import('./Login'));
+const Register = React.lazy(() => import('./Register'));
+const DishCarousel = React.lazy(() => import('./DishCarousel'));
 
 function filterData(text,allrestorant){
    	const filterData=allrestorant.filter((restaurant) =>
@@ -25,7 +28,7 @@ const Home = () => {
 	const[dishes,setDishes]=useState([])
 	const[filterrestorant,setFilterRestorant]=useState([])
 
-	const RestaurantCard = VegFoodCard(FoodCard);
+	const RestaurantCard = useMemo(() => React.memo(VegFoodCard(FoodCard)), []);
 
 	const isOnline=useOnline()
 	const sectionRef = useRef(null);
@@ -57,22 +60,24 @@ const Home = () => {
 
   	return allrestorant.length===0 ? <div className='flex flex-1 justify-center items-center h-full text-2xl font-bold'>Just a moment… your cravings are being prepped.</div>:(
 		<>
-			{ isLoggedInModal && <Login/>}
-			{ isRegisteredModal && <Register/>}
+			<Suspense fallback={<div>Loading…</div>}>
+				{isLoggedInModal && <Login />}
+				{isRegisteredModal && <Register />}
+			</Suspense>
 			<div className='absolute inset-0 bg-gradient-to-t from-black/70 to-white/5 h-screen px-20 max-lg:px-10 flex flex-col' ></div>
-			<video  className="absolute -z-10 inset-0 object-cover h-screen w-full" autoPlay muted loop  playsInline id="myVideo">
+			<video className="absolute -z-10 inset-0 object-cover h-screen w-full" autoPlay muted loop  playsInline id="myVideo">
 				<source src={background} type="video/mp4" />
 					Your browser does not support the video tag.
 			</video>	
 			<div className='font-[merienda] w-[80%] mx-auto flex max-md:flex-col items-center h-screen relative justify-center'>
 				<div>
-					<div  className="w-[50%] max-lg:w-[80%] max-md:w-full mx-auto">
+					<div className="w-[50%] max-lg:w-[80%] max-md:w-full mx-auto">
 						<div className='text-6xl max-xl:text-4xl max-2xl:text-5xl text-center max-md:text-3xl max-lg:text-center font-bold my-auto text-white leading-[75px]'>Order food online from your favourite local restaurants<span className='inline-block w-3 h-3 ms-1 rounded-full bg-orange-500'></span></div>
 						<div className='my-4 max-lg:my-3 text-center text-xl max-md:text-base max-md:text-center font-[poppins] text-white font-semibold'>Freshly made food delivered to your door.</div>
 						<div className='flex border rounded-full h-11 w-[85%] max-md:w-full mx-auto bg-white'>
 							<input 
 								type='text' 
-									className='border-none mx-2 font-[poppins] w-full rounded-full p-2 focus:bg-white focus:outline-none placeholder:text-sm' 
+								className='border-none mx-2 font-[poppins] w-full rounded-full p-2 focus:bg-white focus:outline-none placeholder:text-sm' 
 								value={text} 
 								placeholder='Search for restaurant'
 								onChange={(e)=>setText(e.target.value)} 

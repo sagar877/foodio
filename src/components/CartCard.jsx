@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { base_url, img_url } from './Constants';
 import { getCookie } from '../utils/getCookie';
+import React, { useMemo } from 'react';
 import Login from './Login'
 import { toggleLogin } from "../utils/AppSlice";
 
@@ -13,10 +14,12 @@ const CartCard = (item) => {
 
 	const dispatch=useDispatch()
 
+	console.log('renderedd')
 	const csrf = decodeURIComponent(getCookie('XSRF-TOKEN'))
 
-	const quantity = useSelector(store => store.cart.cartItemsQuantity[item.id]?. quantity) ||1
-	const price = useSelector(store => store.cart.cartItemsQuantity[item.id]?. price) || item.price
+	const cartItem = useSelector(store => store.cart.cartItemsQuantity[item.id]);
+	const quantity = cartItem?.quantity || 1;
+	const price = cartItem?.price || 0;
 	const isLoggedInModal = useSelector( store=>store.app.isLoggedInModal)
 	const isAuthenticated = useSelector(store => store.app.isLoggedIn)
 
@@ -73,7 +76,6 @@ const CartCard = (item) => {
 					});
 			
 					const result = await verifyResponse.json();
-					console.log("✅ Verification result:", result);
 					if (result.success) {
 						alert("Payment verified and successful!");
 					} else {
@@ -100,8 +102,8 @@ const CartCard = (item) => {
 	return (
 		<div>
 			{isLoggedInModal && <Login/> }
-			<div className="w-full h-auto relative cursor-default flex justify-between border p-4 rounded-lg  bg-white my-2">
-				<img className="rounded-bl-lg rounded-tl-lg w-[50%]" src={img_url + item.imageId } alt="dish"/>
+			<div className="w-full h-auto relative cursor-default flex flex-col md:flex-row justify-between border p-4 rounded-lg  bg-white my-2">
+				<img className="rounded-bl-lg rounded-tl-lg md:w-[50%] w-full" src={img_url + item.imageId } alt="dish"/>
 				<div className='flex flex-col flex-1 h-auto p-5'>
 					<div>
 						<p className='font-semibold text-base line-clamp-1 mt-1'>{item.name}</p>
